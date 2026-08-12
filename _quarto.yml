@@ -11,7 +11,7 @@ website:
   title: "Laser Power Measurements QA"
   navbar:
     left:
-      - href: index.ipynb
+      - href: index.html
         text: Results
   page-footer:
     center: "Generated automatically with Quarto and GitHub Actions"
