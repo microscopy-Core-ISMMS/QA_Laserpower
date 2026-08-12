@@ -1,0 +1,26 @@
+project:
+  type: website
+  output-dir: _site
+  execute-dir: project
+  render:
+    - index.ipynb
+  resources:
+    - "outputs/**"
+
+website:
+  title: "Laser Power Measurements QA"
+  navbar:
+    left:
+      - href: index.ipynb
+        text: Results
+  page-footer:
+    center: "Generated automatically with Quarto and GitHub Actions"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+
+execute:
+  echo: false
+  warning: false
