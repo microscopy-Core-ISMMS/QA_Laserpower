@@ -42,33 +42,49 @@ jobs:
           quarto --version
           quarto check jupyter
 
-      # -------------------------------------------------
-      # 1. Run the analysis first
-      # -------------------------------------------------
+      # --------------------------------------------
+      # 1. Run index.ipynb
+      # --------------------------------------------
       - name: Generate microscope analysis
-        run: |
-          quarto render index.ipynb --execute
+        run: quarto render index.ipynb --execute
 
-      # -------------------------------------------------
-      # 2. Generate one Quarto page per microscope
-      # -------------------------------------------------
+      # --------------------------------------------
+      # 2. Verify plots and Excel files
+      # --------------------------------------------
+      - name: Check generated outputs
+        run: |
+          echo "Generated output files:"
+          find outputs -maxdepth 3 -type f | sort
+
+      # --------------------------------------------
+      # 3. Create one page per microscope
+      # --------------------------------------------
       - name: Generate microscope pages
-        run: |
-          python scripts/generate_microscope_pages.py
+        run: python scripts/generate_microscope_pages.py
 
-      # -------------------------------------------------
-      # 3. Render the complete website
-      # -------------------------------------------------
-      - name: Render Quarto website
+      # --------------------------------------------
+      # 4. Verify generated qmd pages
+      # --------------------------------------------
+      - name: Check generated microscope pages
         run: |
-          quarto render
+          echo "Generated microscope pages:"
+          find microscopes -maxdepth 1 -type f | sort
 
-      # -------------------------------------------------
-      # 4. Publish to GitHub Pages
-      # -------------------------------------------------
+      # --------------------------------------------
+      # 5. Render microscope pages
+      # --------------------------------------------
+      - name: Render microscope pages
+        run: quarto render microscopes/*.qmd
+
+      # --------------------------------------------
+      # 6. Configure GitHub Pages
+      # --------------------------------------------
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
+      # --------------------------------------------
+      # 7. Upload rendered website
+      # --------------------------------------------
       - name: Upload website artifact
         uses: actions/upload-pages-artifact@v5
         with:
@@ -86,3 +102,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        

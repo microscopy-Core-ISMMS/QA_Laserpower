@@ -4,3 +4,6 @@ toc: false
 ---
 
 Select a microscope to view its laser-power quality assurance results.
+
+- [LSM 880](LSM_880.qmd)
+- [LSM 980](LSM_980.qmd)
