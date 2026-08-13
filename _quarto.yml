@@ -2,17 +2,21 @@ project:
   type: website
   output-dir: _site
   execute-dir: project
+
   render:
     - index.ipynb
+
   resources:
     - "outputs/**"
 
 website:
   title: "Quality Assurance Laser Power Measurements"
+
   navbar:
     left:
-      - href: index.html
-        text: Zeiss LSM_980
+      - href: index.html#generated-plots
+        text: Results
+
   page-footer:
     center: "Generated automatically with Quarto and GitHub Actions"
 
