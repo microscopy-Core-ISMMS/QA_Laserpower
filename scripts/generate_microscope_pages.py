@@ -72,7 +72,7 @@ navbar_lines = [
     "    left:",
     "      - href: index.ipynb",
     '        text: "Home"',
-    '      - text: "Microscopes"',
+    '      - text: "Laser Power Measurements"',
     "        menu:",
 ]
 
