@@ -12,7 +12,7 @@ website:
   navbar:
     left:
       - href: index.html
-        text: Results
+        text: Zeiss LSM_980
   page-footer:
     center: "Generated automatically with Quarto and GitHub Actions"
 
