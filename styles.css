@@ -1,0 +1,10 @@
+@media (min-width: 992px) {
+
+  .navbar .dropdown:hover > .dropdown-menu {
+    display: block;
+  }
+
+  .navbar .dropdown-menu {
+    margin-top: 0;
+  }
+}
