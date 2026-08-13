@@ -3,9 +3,6 @@ project:
   output-dir: _site
   execute-dir: project
 
-  pre-render:
-    - python scripts/generate_microscope_pages.py
-
   render:
     - index.ipynb
     - microscopes/*.qmd
@@ -18,11 +15,10 @@ website:
 
   navbar:
     left:
-      - href: index.ipynb
+      - href: index.html
         text: Home
-
-      - text: Microscopes
-        href: microscopes/index.qmd
+      - href: microscopes/index.qmd
+        text: Microscopes
 
   sidebar:
     - title: "Microscopes"
