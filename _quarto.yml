@@ -17,12 +17,9 @@ website:
     left:
       - href: index.html
         text: Home
-      - href: microscopes/index.qmd
-        text: Microscopes
 
-  sidebar:
-    - title: "Microscopes"
-      contents: microscopes
+      - href: microscopes/index.html
+        text: Microscopes
 
   page-footer:
     center: "Generated automatically with Quarto and GitHub Actions"
@@ -35,3 +32,4 @@ format:
 execute:
   echo: false
   warning: false
+  error: false
