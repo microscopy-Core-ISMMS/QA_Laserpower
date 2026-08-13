@@ -3,8 +3,12 @@ project:
   output-dir: _site
   execute-dir: project
 
+  pre-render:
+    - python scripts/generate_microscope_pages.py
+
   render:
     - index.ipynb
+    - microscopes/*.qmd
 
   resources:
     - "outputs/**"
@@ -14,15 +18,22 @@ website:
 
   navbar:
     left:
-      - href: index.html#generated-plots
-        text: Results
+      - href: index.ipynb
+        text: Home
+
+      - text: Microscopes
+        href: microscopes/index.qmd
+
+  sidebar:
+    - title: "Microscopes"
+      contents: microscopes
 
   page-footer:
     center: "Generated automatically with Quarto and GitHub Actions"
 
 format:
   html:
-    theme: zephyr
+    theme: journal
     toc: true
 
 execute:
