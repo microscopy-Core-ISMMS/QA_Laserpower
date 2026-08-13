@@ -22,7 +22,7 @@ website:
 
 format:
   html:
-    theme: journal
+    theme: zephyr
     toc: true
 
 execute:
