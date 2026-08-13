@@ -60,6 +60,42 @@ microscopes = sorted(
     key=lambda folder: folder.name.lower(),
 )
 
+# --------------------------------------------------
+# Generate automatic navbar microscope menu
+# --------------------------------------------------
+
+NAVBAR_FILE = PROJECT_DIR / "_navbar.yml"
+
+navbar_lines = [
+    "website:",
+    "  navbar:",
+    "    left:",
+    "      - href: index.ipynb",
+    '        text: "Home"',
+    '      - text: "Microscopes"',
+    "        menu:",
+]
+
+for microscope_dir in microscopes:
+
+    microscope = microscope_dir.name
+    title = display_name(microscope)
+
+    navbar_lines.extend([
+        f'          - text: "{title}"',
+        f"            href: microscopes/{microscope}.qmd",
+    ])
+
+
+NAVBAR_FILE.write_text(
+    "\n".join(navbar_lines) + "\n",
+    encoding="utf-8",
+)
+
+print(
+    f"Generated navbar with "
+    f"{len(microscopes)} microscopes."
+)
 
 print(
     "Detected microscopes:",
