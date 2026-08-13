@@ -8,13 +8,11 @@ project:
     - "outputs/**"
 
 website:
-  title: "Laser Power Measurements QA"
+  title: "Quality Assurance Laser Power Measurements"
   navbar:
     left:
       - href: index.html
         text: Results
-      - href: index.html#generated-plots
-        text: Laser Plots
   page-footer:
     center: "Generated automatically with Quarto and GitHub Actions"
 
