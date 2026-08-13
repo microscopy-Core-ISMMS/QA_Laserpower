@@ -14,7 +14,7 @@ metadata-files:
   - _navbar.yml
 
 website:
-  title: "Quality Assurance Laser Power Measurements"
+  title: "Quality Assurance"
 
   page-footer:
     center: "Generated automatically with Quarto and GitHub Actions"
@@ -29,4 +29,3 @@ execute:
   echo: false
   warning: false
   error: false
-  
