@@ -19,9 +19,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      TARGET_MONTH: ${{ vars.TARGET_MONTH }}
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -45,9 +42,30 @@ jobs:
           quarto --version
           quarto check jupyter
 
-      - name: Render Quarto website
-        run: quarto render --execute
+      # -------------------------------------------------
+      # 1. Run the analysis first
+      # -------------------------------------------------
+      - name: Generate microscope analysis
+        run: |
+          quarto render index.ipynb --execute
 
+      # -------------------------------------------------
+      # 2. Generate one Quarto page per microscope
+      # -------------------------------------------------
+      - name: Generate microscope pages
+        run: |
+          python scripts/generate_microscope_pages.py
+
+      # -------------------------------------------------
+      # 3. Render the complete website
+      # -------------------------------------------------
+      - name: Render Quarto website
+        run: |
+          quarto render
+
+      # -------------------------------------------------
+      # 4. Publish to GitHub Pages
+      # -------------------------------------------------
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
