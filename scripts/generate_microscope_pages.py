@@ -1,6 +1,11 @@
 from pathlib import Path
 import re
 
+
+# --------------------------------------------------
+# Project directories
+# --------------------------------------------------
+
 PROJECT_DIR = Path(__file__).resolve().parents[1]
 
 DATA_DIR = PROJECT_DIR / "data"
@@ -10,16 +15,40 @@ PAGE_DIR = PROJECT_DIR / "microscopes"
 PAGE_DIR.mkdir(parents=True, exist_ok=True)
 
 
+# --------------------------------------------------
+# Helper functions
+# --------------------------------------------------
+
 def display_name(name: str) -> str:
+    """
+    Convert folder names into human-readable microscope names.
+
+    Example:
+        LSM_980 -> LSM 980
+    """
     return name.replace("_", " ")
 
 
 def wavelength_from_name(path: Path) -> int:
+    """
+    Extract wavelength from plot filename.
+
+    Examples:
+        laser_power_405nm.png -> 405
+        laser_power_max_488nm.png -> 488
+    """
+
     match = re.search(r"(\d+)nm$", path.stem)
+
     if match:
         return int(match.group(1))
+
     return 99999
 
+
+# --------------------------------------------------
+# Detect microscopes automatically
+# --------------------------------------------------
 
 microscopes = sorted(
     [
@@ -32,8 +61,14 @@ microscopes = sorted(
 )
 
 
+print(
+    "Detected microscopes:",
+    ", ".join(folder.name for folder in microscopes),
+)
+
+
 # --------------------------------------------------
-# Create the microscope landing page
+# Create microscope landing page
 # --------------------------------------------------
 
 index_lines = [
@@ -47,6 +82,7 @@ index_lines = [
     "",
 ]
 
+
 for microscope_dir in microscopes:
 
     microscope = microscope_dir.name
@@ -56,6 +92,7 @@ for microscope_dir in microscopes:
         f"- [{title}]({microscope}.qmd)"
     )
 
+
 (PAGE_DIR / "index.qmd").write_text(
     "\n".join(index_lines),
     encoding="utf-8",
@@ -63,7 +100,7 @@ for microscope_dir in microscopes:
 
 
 # --------------------------------------------------
-# Create one page per microscope
+# Create one Quarto page per microscope
 # --------------------------------------------------
 
 for microscope_dir in microscopes:
@@ -73,13 +110,20 @@ for microscope_dir in microscopes:
 
     microscope_output = OUTPUT_DIR / microscope
     plot_dir = microscope_output / "plots"
+
     excel_path = (
-        microscope_output / "combined_power_data.xlsx"
+        microscope_output /
+        "combined_power_data.xlsx"
     )
+
+    # ----------------------------------------------
+    # Find calibration plots
+    # ----------------------------------------------
 
     calibration_plots = []
 
     if plot_dir.exists():
+
         calibration_plots = sorted(
             [
                 plot
@@ -93,15 +137,24 @@ for microscope_dir in microscopes:
             key=wavelength_from_name,
         )
 
+    # ----------------------------------------------
+    # Find maximum-power plots
+    # ----------------------------------------------
+
     maximum_plots = []
 
     if plot_dir.exists():
+
         maximum_plots = sorted(
             plot_dir.glob(
                 "laser_power_max_*nm.png"
             ),
             key=wavelength_from_name,
         )
+
+    # ----------------------------------------------
+    # Start microscope page
+    # ----------------------------------------------
 
     lines = [
         "---",
@@ -115,12 +168,12 @@ for microscope_dir in microscopes:
     # Calibration plots
     # ----------------------------------------------
 
-    if calibration_plots:
+    lines.extend([
+        "## Laser Power Calibration",
+        "",
+    ])
 
-        lines.extend([
-            "## Laser Power Calibration",
-            "",
-        ])
+    if calibration_plots:
 
         for plot in calibration_plots:
 
@@ -145,14 +198,12 @@ for microscope_dir in microscopes:
     else:
 
         lines.extend([
-            "## Laser Power Calibration",
-            "",
             "No calibration plots are available.",
             "",
         ])
 
     # ----------------------------------------------
-    # Maximum-power plots
+    # Maximum laser-power plots
     # ----------------------------------------------
 
     if maximum_plots:
@@ -213,11 +264,23 @@ for microscope_dir in microscopes:
 
     lines.append("")
 
-    page_path = PAGE_DIR / f"{microscope}.qmd"
+    # ----------------------------------------------
+    # Write microscope page
+    # ----------------------------------------------
+
+    page_path = (
+        PAGE_DIR /
+        f"{microscope}.qmd"
+    )
 
     page_path.write_text(
         "\n".join(lines),
         encoding="utf-8",
+    )
+
+    print(
+        f"Generated microscope page: "
+        f"{page_path.name}"
     )
 
 
