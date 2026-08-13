@@ -43,13 +43,19 @@ jobs:
           quarto check jupyter
 
       # --------------------------------------------
-      # 1. Run index.ipynb
+      # 1. Generate navbar and initial pages
+      # --------------------------------------------
+      - name: Generate microscope navigation
+        run: python scripts/generate_microscope_pages.py
+
+      # --------------------------------------------
+      # 2. Run analysis
       # --------------------------------------------
       - name: Generate microscope analysis
         run: quarto render index.ipynb --execute
 
       # --------------------------------------------
-      # 2. Verify plots and Excel files
+      # 3. Verify analysis outputs
       # --------------------------------------------
       - name: Check generated outputs
         run: |
@@ -57,13 +63,21 @@ jobs:
           find outputs -maxdepth 3 -type f | sort
 
       # --------------------------------------------
-      # 3. Create one page per microscope
+      # 4. Regenerate pages after outputs exist
       # --------------------------------------------
       - name: Generate microscope pages
         run: python scripts/generate_microscope_pages.py
 
       # --------------------------------------------
-      # 4. Verify generated qmd pages
+      # 5. Check generated navbar
+      # --------------------------------------------
+      - name: Check generated navbar
+        run: |
+          echo "Generated navbar:"
+          cat _navbar.yml
+
+      # --------------------------------------------
+      # 6. Check microscope pages
       # --------------------------------------------
       - name: Check generated microscope pages
         run: |
@@ -71,7 +85,7 @@ jobs:
           find microscopes -maxdepth 1 -type f | sort
 
       # --------------------------------------------
-      # 5. Render microscope pages one at a time
+      # 7. Render microscope pages
       # --------------------------------------------
       - name: Render microscope pages
         run: |
@@ -81,7 +95,7 @@ jobs:
           done
 
       # --------------------------------------------
-      # 6. Check final website
+      # 8. Verify final website
       # --------------------------------------------
       - name: Check rendered website
         run: |
@@ -89,13 +103,13 @@ jobs:
           find _site -maxdepth 3 -type f | sort
 
       # --------------------------------------------
-      # 7. Configure GitHub Pages
+      # 9. Configure GitHub Pages
       # --------------------------------------------
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
       # --------------------------------------------
-      # 8. Upload rendered website
+      # 10. Upload website
       # --------------------------------------------
       - name: Upload website artifact
         uses: actions/upload-pages-artifact@v5
