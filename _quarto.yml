@@ -18,7 +18,7 @@ website:
 
 format:
   html:
-    theme: cosmo
+    theme: journal
     toc: true
 
 execute:
