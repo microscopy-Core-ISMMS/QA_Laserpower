@@ -75,22 +75,8 @@ navbar_lines = [
     '      - text: "Confocal Microscopes"',
     "        menu:",
     '          - text: "Laser Power Measurements"',
-    "            menu:",
+    "            href: microscopes/index.qmd",
 ]
-
-
-# Add every detected microscope under
-# Laser Power Measurements
-for microscope_dir in microscopes:
-
-    microscope = microscope_dir.name
-    title = display_name(microscope)
-
-    navbar_lines.extend([
-        f'              - text: "{title}"',
-        f"                href: microscopes/{microscope}.qmd",
-    ])
-
 
 NAVBAR_FILE.write_text(
     "\n".join(navbar_lines) + "\n",
@@ -101,15 +87,6 @@ print(
     f"Generated navbar with "
     f"{len(microscopes)} microscopes."
 )
-
-print(
-    "Detected microscopes:",
-    ", ".join(
-        folder.name
-        for folder in microscopes
-    ),
-)
-
 
 # --------------------------------------------------
 # Create microscope landing page
