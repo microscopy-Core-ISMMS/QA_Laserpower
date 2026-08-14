@@ -26,6 +26,7 @@ format:
     toc: true
 
     grid:
+      body-width: 750px
       margin-width: 400px
 execute:
   echo: false
