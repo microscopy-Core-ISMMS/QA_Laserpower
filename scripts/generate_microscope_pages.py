@@ -177,16 +177,16 @@ for microscope_dir in microscopes:
     # Start microscope page
     # ----------------------------------------------
 
-lines = [
-    "---",
-    f'title: "{title}"',
-    "toc: true",
-    "other-links:",
-    '  - text: "← Back to Laser Power Measurements"',
-    "    href: index.qmd",
-    "---",
-    "",
-]
+    lines = [
+        "---",
+        f'title: "{title}"',
+        "toc: true",
+        "other-links:",
+        '  - text: "← Back to Laser Power Measurements"',
+        "    href: index.qmd",
+        "---",
+        "",
+    ]
 
     # ----------------------------------------------
     # Calibration plots
