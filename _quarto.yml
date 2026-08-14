@@ -14,7 +14,7 @@ metadata-files:
   - _navbar.yml
 
 website:
-  title: "Quality Assurance"
+  title: "Quality Assesment"
 
   page-footer:
     center: "Generated automatically with Quarto and GitHub Actions"
