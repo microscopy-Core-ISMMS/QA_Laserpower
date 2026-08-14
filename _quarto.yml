@@ -25,6 +25,8 @@ format:
     css: styles.css
     toc: true
 
+    grid:
+      margin-width: 400px
 execute:
   echo: false
   warning: false
