@@ -1,10 +1,19 @@
 @media (min-width: 992px) {
 
+  /* Open first-level dropdown on hover */
   .navbar .dropdown:hover > .dropdown-menu {
     display: block;
   }
 
-  .navbar .dropdown-menu {
+  /* Position nested dropdown beside parent */
+  .navbar .dropdown-menu .dropdown-menu {
+    top: 0;
+    left: 100%;
     margin-top: 0;
+  }
+
+  /* Open nested dropdown on hover */
+  .navbar .dropdown-menu li:hover > .dropdown-menu {
+    display: block;
   }
 }
