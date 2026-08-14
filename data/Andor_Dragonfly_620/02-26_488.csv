@@ -1,0 +1,40 @@
+Analysis name
+power_meter
+
+Image files
+measured_optical_power_vs_acquisition_duration;measured_optical_power_vs_power_instruction
+02-26_488_measured_optical_power_vs_acquisition_duration.jpg;02-26_488_measured_optical_power_vs_power_instruction.jpg
+
+File information
+false
+false
+
+Context values
+no_value
+1
+
+Reliability values
+no_value
+1
+
+Result values
+power_average;power_standard_deviation;power_maximum;power_minimum;power_deviation;power_stability
+99.32857142857142;40.55074560299953;99.396;99.256;0.14094635409175954;99.92952499848981
+
+Result table values
+power_instruction;488_power;488_error
+0.0;-2.0;-0.2
+1.0;3053.0;305.3
+2.0;7427.0;742.7
+5.0;20568.0;2056.8
+10.0;40149.0;4014.9
+20.0;80138.0;8013.8
+25.0;99396.0;9939.6
+time;measured_optical_power_error;measured_optical_power_average
+0.0;9.925600000000001;99.256
+1.0;9.9332;99.332
+2.0;9.9329;99.329
+3.0;9.937000000000001;99.37
+4.0;9.9396;99.396
+5.0;9.932200000000002;99.322
+6.0;9.9295;99.295

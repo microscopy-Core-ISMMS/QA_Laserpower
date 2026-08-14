@@ -1,0 +1,55 @@
+Analysis name
+power_meter
+
+Image files
+measured_optical_power_vs_acquisition_duration;measured_optical_power_vs_power_instruction
+488_POWER_HM_power_meter_SLPM-161_Calibration(2).argo_measured_optical_power_vs_acquisition_duration.jpg;488_POWER_HM_power_meter_SLPM-161_Calibration(2).argo_measured_optical_power_vs_power_instruction.jpg
+
+File information
+false
+false
+
+Context values
+no_value
+1
+
+Reliability values
+no_value
+1
+
+Result values
+power_average;power_standard_deviation;power_maximum;power_minimum;power_deviation;power_stability
+0.48370370370370375;0.8153625645310828;2.093;-0.011;434.9770290964778;-1.056676272814605
+
+Result table values
+power_instruction;488_power;488_error
+10.0;216.0;21.6
+100.0;2093.0;209.3
+time;measured_optical_power_error;measured_optical_power_average
+0.0;-0.0011;-0.011
+1.0;-4.0E-4;-0.004
+2.0;9.0E-4;0.009
+3.0;9.0E-4;0.009
+4.0;9.0E-4;0.009
+5.0;0.0;0.0
+6.0;0.0;0.0
+7.0;0.0;0.0
+8.0;0.0;0.0
+9.0;0.0;0.0
+10.0;2.0E-4;0.002
+11.0;2.0E-4;0.002
+12.0;3.0000000000000003E-4;0.003
+13.0;3.0000000000000003E-4;0.003
+14.0;0.020300000000000002;0.203
+15.0;0.0216;0.216
+16.0;0.0216;0.216
+17.0;0.0216;0.216
+18.0;0.0217;0.217
+19.0;0.0216;0.216
+20.0;0.0216;0.216
+21.0;0.1077;1.077
+22.0;0.20910000000000004;2.091
+23.0;0.20920000000000002;2.092
+24.0;0.20920000000000002;2.092
+25.0;0.2093;2.093
+26.0;0.2093;2.093
