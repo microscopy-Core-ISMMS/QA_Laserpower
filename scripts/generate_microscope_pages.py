@@ -72,20 +72,11 @@ navbar_lines = [
     "    left:",
     "      - href: index.ipynb",
     '        text: "Home"',
-    '      - text: "Laser Power Measurements"',
+    '      - text: "Confocal Microscopes"',
     "        menu:",
+    '          - text: "Laser Power Measurements"',
+    "            href: microscopes/index.qmd",
 ]
-
-for microscope_dir in microscopes:
-
-    microscope = microscope_dir.name
-    title = display_name(microscope)
-
-    navbar_lines.extend([
-        f'          - text: "{title}"',
-        f"            href: microscopes/{microscope}.qmd",
-    ])
-
 
 NAVBAR_FILE.write_text(
     "\n".join(navbar_lines) + "\n",
@@ -109,12 +100,12 @@ print(
 
 index_lines = [
     "---",
-    'title: "Microscopes"',
+    'title: "Laser Power Measurements"',
     "toc: false",
     "---",
     "",
-    "Select a microscope to view its laser-power "
-    "quality assurance results.",
+    "Select a confocal microscope to view its "
+    "laser-power quality assurance results.",
     "",
 ]
 
