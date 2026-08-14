@@ -1,0 +1,43 @@
+Analysis name
+power_meter
+
+Image files
+measured_optical_power_vs_acquisition_duration;measured_optical_power_vs_power_instruction
+SP8 STED QC_measured_optical_power_vs_acquisition_duration.jpg;SP8 STED QC_measured_optical_power_vs_power_instruction.jpg
+
+File information
+false
+false
+
+Context values
+no_value
+1
+
+Reliability values
+no_value
+1
+
+Result values
+power_average;power_standard_deviation;power_maximum;power_minimum;power_deviation;power_stability
+0.0779375;0.06239935438034062;0.126;-0.001;162.95108259823573;-1.6000000000000014
+
+Result table values
+power_instruction;514_power;514_error
+100.0;124.0;12.4
+time;measured_optical_power_error;measured_optical_power_average
+0.0;-1.0E-4;-0.001
+1.0;-1.0E-4;-0.001
+2.0;-1.0E-4;-0.001
+3.0;-0.0;-0.0
+4.0;0.0036;0.036
+5.0;0.0126;0.126
+6.0;0.012400000000000001;0.124
+7.0;0.0125;0.125
+8.0;0.0125;0.125
+9.0;0.012400000000000001;0.124
+10.0;0.012400000000000001;0.124
+11.0;0.012400000000000001;0.124
+12.0;0.0125;0.125
+13.0;0.0123;0.123
+14.0;0.0094;0.094
+15.0;-0.0;-0.0
