@@ -75,8 +75,22 @@ navbar_lines = [
     '      - text: "Confocal Microscopes"',
     "        menu:",
     '          - text: "Laser Power Measurements"',
-    "            href: microscopes/index.qmd",
+    "            menu:",
 ]
+
+
+# Add every detected microscope under
+# Laser Power Measurements
+for microscope_dir in microscopes:
+
+    microscope = microscope_dir.name
+    title = display_name(microscope)
+
+    navbar_lines.extend([
+        f'              - text: "{title}"',
+        f"                href: microscopes/{microscope}.qmd",
+    ])
+
 
 NAVBAR_FILE.write_text(
     "\n".join(navbar_lines) + "\n",
@@ -90,7 +104,10 @@ print(
 
 print(
     "Detected microscopes:",
-    ", ".join(folder.name for folder in microscopes),
+    ", ".join(
+        folder.name
+        for folder in microscopes
+    ),
 )
 
 
