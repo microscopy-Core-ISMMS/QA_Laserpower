@@ -183,7 +183,7 @@ for microscope_dir in microscopes:
         "toc: true",
         "other-links:",
         '  - text: "← Back to Laser Power Measurements"',
-        "    href: index.qmd",
+        "    href: index.html",
         "---",
         "",
     ]
