@@ -3,7 +3,7 @@ title: "Laser Power Measurements"
 toc: false
 ---
 
-## Illumination Power Stability
+** Illumination Power Stability**
 
 Quality assurance of illumination power stability is critical because fluorescence intensity measurements depend directly on the excitation power delivered to the sample. Under standard imaging conditions, the emitted fluorescence signal is proportional to the fluorophore concentration and the excitation light intensity. Any fluctuation in illumination power can therefore alter measured signal levels, potentially leading to incorrect conclusions about changes in fluorophore abundance, molecular interactions, or cellular dynamics. Ensuring stable and reproducible excitation conditions is essential for reliable quantitative fluorescence imaging.
 
@@ -12,6 +12,7 @@ Over time, illumination sources such as lasers or LEDs can exhibit fluctuations 
 ## Confocal Microscopes
 
 Select a confocal microscope to view its laser-power quality assurance results.
+
 
 - [LSM 880](LSM_880.qmd)
 - [LSM 980](LSM_980.qmd)
