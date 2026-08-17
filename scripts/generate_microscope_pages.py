@@ -94,7 +94,7 @@ print(
 
 index_lines = [
     "---",
-    'title: "Confocal MicroscopesLaser Power Measurements"',
+    'title: "Confocal Microscopes Laser Power Measurements"',
     "toc: true",
     "---",
     "",
