@@ -17,3 +17,23 @@
     display: block;
   }
 }
+
+.quarto-title-meta-author {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.quarto-title-meta-author::before {
+  content: "";
+  display: block;
+  width: 90px;
+  height: 90px;
+
+  background-image: url("images/core_logo.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  flex-shrink: 0;
+}

@@ -120,7 +120,7 @@ index_lines = [
     "stability allows early detection of such fluctuations and helps ensure "
     "that excitation conditions remain consistent and reproducible.",
     "",
-    "## Confocal Microscopes Laser-power Quality Assurance Results",
+    "## Confocal Microscopes Laser-power Results",
     "",
     "Select a confocal microscope to view its laser-power quality assurance results.",
     "",
