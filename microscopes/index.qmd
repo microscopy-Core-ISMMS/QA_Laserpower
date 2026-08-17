@@ -2,7 +2,7 @@
 title: "Laser Power Measurements"
 toc: true
 ---
-- [Introduction](#illumination-power-stability)
+- [Introduction](#introduction)
 - [Confocal Microscopes](#confocal-microscopes)
 
 ## Introduction

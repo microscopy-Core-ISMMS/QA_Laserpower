@@ -98,7 +98,7 @@ index_lines = [
     "toc: true",
     "---",
     "",
-    "## Illumination Power Stability",
+    "## Introduction",
     "",
     "Quality assurance of illumination power stability is critical because "
     "fluorescence intensity measurements depend directly on the excitation "
