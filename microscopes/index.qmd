@@ -2,12 +2,16 @@
 title: "Laser Power Measurements"
 toc: true
 ---
+- [Introduction](#illumination-power-stability)
+- [Confocal Microscopes](#confocal-microscopes)
 
-** Illumination Power Stability**
+## Introduction
 
 Quality assurance of illumination power stability is critical because fluorescence intensity measurements depend directly on the excitation power delivered to the sample. Under standard imaging conditions, the emitted fluorescence signal is proportional to the fluorophore concentration and the excitation light intensity. Any fluctuation in illumination power can therefore alter measured signal levels, potentially leading to incorrect conclusions about changes in fluorophore abundance, molecular interactions, or cellular dynamics. Ensuring stable and reproducible excitation conditions is essential for reliable quantitative fluorescence imaging.
 
 Over time, illumination sources such as lasers or LEDs can exhibit fluctuations due to component aging, temperature changes, electronic instability, or optical misalignment within the light path. These variations may occur over multiple time scales and can introduce unwanted variability between images acquired during a single experiment or across different experimental sessions. Routine monitoring of illumination power stability allows early detection of such fluctuations and helps ensure that excitation conditions remain consistent and reproducible.
+
+...
 
 ## Confocal Microscopes
 
