@@ -9,6 +9,7 @@ project:
 
   resources:
     - "outputs/**"
+    - "images/**"
 
 metadata-files:
   - _navbar.yml

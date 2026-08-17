@@ -18,17 +18,19 @@
   }
 }
 
-.quarto-title-meta-author {
+/* Author block */
+#title-block-header .quarto-title-meta > div:first-child .quarto-title-meta-contents {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 18px;
 }
 
-.quarto-title-meta-author::before {
+/* MABC logo */
+#title-block-header .quarto-title-meta > div:first-child .quarto-title-meta-contents::before {
   content: "";
   display: block;
-  width: 90px;
-  height: 90px;
+  width: 100px;
+  height: 100px;
 
   background-image: url("images/core_logo.png");
   background-size: contain;
