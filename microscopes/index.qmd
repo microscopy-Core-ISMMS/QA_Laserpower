@@ -1,6 +1,6 @@
 ---
 title: "Laser Power Measurements"
-toc: false
+toc: true
 ---
 
 ** Illumination Power Stability**
