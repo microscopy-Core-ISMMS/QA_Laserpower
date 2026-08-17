@@ -3,7 +3,7 @@ title: "Laser Power Measurements"
 toc: true
 ---
 - [Introduction](#introduction)
-- [Confocal Microscopes](#confocal-microscopes)
+- [Laser Power Results](#laser-power-results)
 
 ## Introduction
 

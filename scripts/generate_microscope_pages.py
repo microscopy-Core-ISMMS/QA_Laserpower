@@ -94,7 +94,7 @@ print(
 
 index_lines = [
     "---",
-    'title: "Laser Power Measurements"',
+    'title: "Confocal MicroscopesLaser Power Measurements"',
     "toc: true",
     "---",
     "",
@@ -120,7 +120,7 @@ index_lines = [
     "stability allows early detection of such fluctuations and helps ensure "
     "that excitation conditions remain consistent and reproducible.",
     "",
-    "## Confocal Microscopes Laser-power Results",
+    "## Laser-power Results",
     "",
     "Select a confocal microscope to view its laser-power quality assurance results.",
     "",
