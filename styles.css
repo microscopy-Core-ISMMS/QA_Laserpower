@@ -29,8 +29,8 @@
 #title-block-header .quarto-title-meta > div:first-child .quarto-title-meta-contents::before {
   content: "";
   display: block;
-  width: 100px;
-  height: 100px;
+  width: 220px;
+  height: 120px;
 
   background-image: url("images/core_logo.png");
   background-size: contain;
