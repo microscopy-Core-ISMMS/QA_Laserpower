@@ -5,7 +5,6 @@ project:
 
   render:
     - index.ipynb
-    - microscopes/*.qmd
     - microscopes/laser_power/*.qmd
     - microscopes/psf/*.qmd
 
