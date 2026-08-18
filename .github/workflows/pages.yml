@@ -89,7 +89,7 @@ jobs:
       # --------------------------------------------
       - name: Render microscope pages
         run: |
-          for page in microscopes/*.qmd; do
+          find microscopes -type f -name "*.qmd" | sort | while read -r page; do
             echo "Rendering $page"
             quarto render "$page"
           done
