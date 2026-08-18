@@ -79,10 +79,10 @@ jobs:
       # --------------------------------------------
       # 6. Check microscope pages
       # --------------------------------------------
-      - name: Check generated microscope pages
+     -  name: Check generated microscope pages
         run: |
           echo "Generated microscope pages:"
-          find microscopes -maxdepth 1 -type f | sort
+          find microscopes -type f | sort
 
       # --------------------------------------------
       # 7. Render microscope pages
