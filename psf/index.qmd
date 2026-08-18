@@ -1,0 +1,15 @@
+---
+title: "PSF Measurements"
+toc: true
+---
+
+## Point Spread Function Measurements
+
+Point spread function (PSF) measurements are used to assess the spatial resolution and optical performance of the microscope.
+
+## Confocal Microscopes
+
+Select a confocal microscope to view its PSF measurements.
+
+- [LSM 880](LSM_880.qmd)
+- [LSM 980](LSM_980.qmd)
