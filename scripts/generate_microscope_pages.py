@@ -124,10 +124,6 @@ index_lines = [
     "",
     "Select a confocal microscope to view its laser-power measurements.",
     "",
-    "## Point Spread Function Results",
-    "",
-    "Select a confocal microscope to view its point spread function results.",
-    "",
 ]
 
 
