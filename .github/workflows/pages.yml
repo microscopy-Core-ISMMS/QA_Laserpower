@@ -42,82 +42,57 @@ jobs:
           quarto --version
           quarto check jupyter
 
-      # --------------------------------------------
-      # 1. Generate navbar and initial pages
-      # --------------------------------------------
+      # Create _navbar.yml and initial generated pages.
+      # This must happen before Quarto reads _navbar.yml.
       - name: Generate microscope navigation
-        run: python scripts/generate_microscope_pages.py
+        run: |
+          python scripts/generate_microscope_pages.py
 
-      # --------------------------------------------
-      # 2. Run analysis
-      # --------------------------------------------
+      # Execute the notebook to create laser-power plots and Excel files.
       - name: Generate microscope analysis
-        run: quarto render index.ipynb --execute
+        run: |
+          quarto render index.ipynb --execute
 
-      # --------------------------------------------
-      # 3. Verify analysis outputs
-      # --------------------------------------------
       - name: Check generated outputs
         run: |
           echo "Generated output files:"
-          find outputs -maxdepth 3 -type f | sort
+          find outputs -maxdepth 4 -type f | sort
 
-      # --------------------------------------------
-      # 4. Regenerate pages after outputs exist
-      # --------------------------------------------
-      - name: Generate microscope pages
-        run: python scripts/generate_microscope_pages.py
+      # Run the page generator again after the plots exist.
+      - name: Regenerate microscope pages
+        run: |
+          python scripts/generate_microscope_pages.py
 
-      # --------------------------------------------
-      # 5. Check generated navbar
-      # --------------------------------------------
       - name: Check generated navbar
         run: |
           echo "Generated navbar:"
           cat _navbar.yml
 
-      # --------------------------------------------
-      # 6. Check microscope pages
-      # --------------------------------------------
-     -  name: Check generated microscope pages
+      - name: Check generated microscope pages
         run: |
           echo "Generated microscope pages:"
           find microscopes -type f | sort
 
-      # --------------------------------------------
-      # 7. Render microscope pages
-      # --------------------------------------------
+      # Render all QMD pages recursively.
+      # This includes:
+      # microscopes/index.qmd
+      # microscopes/laser_power/*.qmd
+      # microscopes/psf/*.qmd
       - name: Render microscope pages
         run: |
           find microscopes -type f -name "*.qmd" | sort | while read -r page; do
             echo "Rendering $page"
             quarto render "$page"
           done
-      
-      - name: Render PSF pages
-        run: |
-          for page in psf/*.qmd; do
-            echo "Rendering $page"
-            quarto render "$page"
-          done
 
-      # --------------------------------------------
-      # 8. Verify final website
-      # --------------------------------------------
       - name: Check rendered website
         run: |
           echo "Rendered website files:"
-          find _site -maxdepth 3 -type f | sort
+          find _site -maxdepth 5 -type f | sort
 
-      # --------------------------------------------
-      # 9. Configure GitHub Pages
-      # --------------------------------------------
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      # --------------------------------------------
-      # 10. Upload website
-      # --------------------------------------------
       - name: Upload website artifact
         uses: actions/upload-pages-artifact@v5
         with:
