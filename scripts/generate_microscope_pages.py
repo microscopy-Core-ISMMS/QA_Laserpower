@@ -584,18 +584,65 @@ print(
 # --------------------------------------------------
 # Create one PSF page per microscope
 # --------------------------------------------------
-#
-# These are currently placeholder pages.
-#
-# Once the format of your PSF data and plots is defined,
-# we will replace this section with the actual PSF
-# analysis/plot discovery code.
-# --------------------------------------------------
 
 for microscope_dir in psf_microscopes:
 
     microscope = microscope_dir.name
     title = display_name(microscope)
+
+    # ----------------------------------------------
+    # PSF output directories
+    # ----------------------------------------------
+
+    psf_output_dir = (
+        OUTPUT_DIR
+        / "PSF_Measurements"
+        / microscope
+    )
+
+    psf_plot_dir = (
+        psf_output_dir
+        / "plots"
+    )
+
+    combined_psf_csv = (
+        psf_output_dir
+        / "combined_PSF_data.csv"
+    )
+
+    # ----------------------------------------------
+    # Find XY PSF plots
+    # ----------------------------------------------
+
+    xy_plots = []
+
+    if psf_plot_dir.exists():
+
+        xy_plots = sorted(
+            psf_plot_dir.glob(
+                "PSF_XY_*.png"
+            ),
+            key=lambda path: path.name.lower(),
+        )
+
+    # ----------------------------------------------
+    # Find Z PSF plots
+    # ----------------------------------------------
+
+    z_plots = []
+
+    if psf_plot_dir.exists():
+
+        z_plots = sorted(
+            psf_plot_dir.glob(
+                "PSF_Z_*.png"
+            ),
+            key=lambda path: path.name.lower(),
+        )
+
+    # ----------------------------------------------
+    # Start PSF microscope page
+    # ----------------------------------------------
 
     psf_lines = [
         "---",
@@ -609,27 +656,161 @@ for microscope_dir in psf_microscopes:
         "    href: index.html",
         "---",
         "",
-        "## PSF Measurements",
-        "",
-        (
-            "PSF measurement results will be "
-            "displayed here."
-        ),
-        "",
     ]
 
+    # ----------------------------------------------
+    # XY PSF Measurements
+    # ----------------------------------------------
+
+    psf_lines.extend([
+        "## Lateral PSF Measurements",
+        "",
+    ])
+
+    if xy_plots:
+
+        for plot in xy_plots:
+
+            objective = (
+                plot.stem
+                .replace(
+                    "PSF_XY_",
+                    ""
+                )
+            )
+
+            plot_title = (
+                f"PSF XY - {objective}"
+            )
+
+            image_path = (
+                f"../../outputs/"
+                f"PSF_Measurements/"
+                f"{microscope}/"
+                f"plots/{plot.name}"
+            )
+
+            psf_lines.extend([
+                f"### {objective}",
+                "",
+                (
+                    f"![{plot_title}]"
+                    f"({image_path})"
+                ),
+                "",
+            ])
+
+    else:
+
+        psf_lines.extend([
+            (
+                "No lateral PSF measurements "
+                "are currently available."
+            ),
+            "",
+        ])
+
+    # ----------------------------------------------
+    # Axial PSF Measurements
+    # ----------------------------------------------
+
+    psf_lines.extend([
+        "## Axial PSF Measurements",
+        "",
+    ])
+
+    if z_plots:
+
+        for plot in z_plots:
+
+            objective = (
+                plot.stem
+                .replace(
+                    "PSF_Z_",
+                    ""
+                )
+            )
+
+            plot_title = (
+                f"PSF Z - {objective}"
+            )
+
+            image_path = (
+                f"../../outputs/"
+                f"PSF_Measurements/"
+                f"{microscope}/"
+                f"plots/{plot.name}"
+            )
+
+            psf_lines.extend([
+                f"### {objective}",
+                "",
+                (
+                    f"![{plot_title}]"
+                    f"({image_path})"
+                ),
+                "",
+            ])
+
+    else:
+
+        psf_lines.extend([
+            (
+                "No axial PSF measurements "
+                "are currently available."
+            ),
+            "",
+        ])
+
+    # ----------------------------------------------
+    # PSF data download
+    # ----------------------------------------------
+
+    psf_lines.extend([
+        (
+            "## Download Data "
+            "{.unnumbered .unlisted}"
+        ),
+        "",
+    ])
+
+    if combined_psf_csv.exists():
+
+        csv_link = (
+            f"../../outputs/"
+            f"PSF_Measurements/"
+            f"{microscope}/"
+            "combined_PSF_data.csv"
+        )
+
+        psf_lines.append(
+            f"[Download {title} PSF data]"
+            f"({csv_link})"
+            "{.btn .btn-primary}"
+        )
+
+    else:
+
+        psf_lines.append(
+            "The combined PSF data file "
+            "is not available."
+        )
+
+    psf_lines.append("")
+
+    # ----------------------------------------------
+    # Write PSF microscope page
+    # ----------------------------------------------
 
     psf_page_path = (
         PSF_PAGE_DIR
         / f"{microscope}.qmd"
     )
 
-
     psf_page_path.write_text(
         "\n".join(psf_lines) + "\n",
         encoding="utf-8",
     )
-
 
     print(
         "Generated PSF page: "

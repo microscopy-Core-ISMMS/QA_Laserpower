@@ -52,6 +52,11 @@ jobs:
       - name: Generate microscope analysis
         run: |
           quarto render index.ipynb --execute
+      
+
+      - name: Generate PSF analysis
+        run: |
+          python scripts/generate_psf_plots.py
 
       - name: Check generated outputs
         run: |
