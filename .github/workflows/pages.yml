@@ -93,6 +93,13 @@ jobs:
             echo "Rendering $page"
             quarto render "$page"
           done
+      
+      - name: Render PSF pages
+        run: |
+          for page in psf/*.qmd; do
+            echo "Rendering $page"
+            quarto render "$page"
+          done
 
       # --------------------------------------------
       # 8. Verify final website

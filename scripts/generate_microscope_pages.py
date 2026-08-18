@@ -76,6 +76,8 @@ navbar_lines = [
     "        menu:",
     '          - text: "Laser Power Measurements"',
     "            href: microscopes/index.qmd",
+    '          - text: "PSF Measurements"',
+    "            href: psf/index.qmd",
 ]
 
 NAVBAR_FILE.write_text(
