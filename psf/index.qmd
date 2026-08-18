@@ -3,9 +3,11 @@ title: "PSF Measurements"
 toc: true
 ---
 
-## Point Spread Function Measurements
+## Lateral and Axial resolution of the microscopes
 
-Point spread function (PSF) measurements are used to assess the spatial resolution and optical performance of the microscope.
+Quality assurance of axial and lateral resolution, typically assessed by measuring the Point Spread Function (PSF), is essential because it verifies whether a microscope can truly resolve fine details as expected. Even small deviations in the PSF can reduce image sharpness, distort structures, and compromise quantitative measurements. 
+
+Optical components drift, age, or become misaligned over time, causing gradual loss of resolution. By routinely evaluating the PSF, we can detect these changes early, ensure the system performs consistently, and maintain reliable, reproducible data. In short, PSF monitoring provides the foundation for trustworthy imaging and accurate downstream analysis. 
 
 ## Confocal Microscopes
 
