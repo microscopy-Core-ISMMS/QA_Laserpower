@@ -39,7 +39,7 @@ From the Fiji menu, select:
 
 The **Align stack** window will appear.
 
-For most datasets, begin with the default parameters.
+For most datasets, begin with the **default parameters**.
 
 #### Scale Invariant Interest Point Detector
 
