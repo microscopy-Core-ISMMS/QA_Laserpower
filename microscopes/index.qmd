@@ -1,8 +1,7 @@
+---
 title: "Quality Assesment Introduction"
 toc: true
 ---
-- [Introduction](#introduction)
-
 
 ## Introduction 
 
