@@ -1,5 +1,6 @@
 from pathlib import Path
 from datetime import datetime
+from typing import List, Optional
 import re
 
 import numpy as np
@@ -30,9 +31,16 @@ PSF_OUTPUT_DIR = (
 # Detect microscopes
 # --------------------------------------------------
 
-def detect_microscopes(folder: Path) -> list[Path]:
+def detect_microscopes(folder: Path) -> List[Path]:
+    """
+    Detect microscope folders inside the PSF data directory.
+    """
 
     if not folder.exists():
+        print(
+            f"Warning: PSF data directory does not exist: "
+            f"{folder}"
+        )
         return []
 
     return sorted(
@@ -50,7 +58,19 @@ def detect_microscopes(folder: Path) -> list[Path]:
 # Detect objectives from filenames
 # --------------------------------------------------
 
-def detect_objectives(csv_files: list[Path]) -> list[str]:
+def detect_objectives(
+    csv_files: List[Path]
+) -> List[str]:
+    """
+    Detect objective magnifications from filenames.
+
+    Examples:
+        10x
+        20xW
+        40xO
+
+    Objective names are stored internally in lowercase.
+    """
 
     objectives = set()
 
@@ -75,7 +95,9 @@ def detect_objectives(csv_files: list[Path]) -> list[str]:
 # Parse one PSF CSV
 # --------------------------------------------------
 
-def parse_psf_csv(file_path: Path) -> pd.DataFrame:
+def parse_psf_csv(
+    file_path: Path
+) -> pd.DataFrame:
     """
     Parse MaxX, MaxY and MaxZ measurements from
     one PSF CSV file.
@@ -111,7 +133,9 @@ def parse_psf_csv(file_path: Path) -> pd.DataFrame:
 
         year = (
             2000
-            + int(date_match.group(2))
+            + int(
+                date_match.group(2)
+            )
         )
 
         date_obj = datetime(
@@ -124,7 +148,6 @@ def parse_psf_csv(file_path: Path) -> pd.DataFrame:
 
         date_obj = None
 
-
     # ----------------------------------------------
     # PSF sections
     # ----------------------------------------------
@@ -136,7 +159,6 @@ def parse_psf_csv(file_path: Path) -> pd.DataFrame:
     }
 
     section_data = {}
-
 
     # ----------------------------------------------
     # Parse each section
@@ -161,21 +183,20 @@ def parse_psf_csv(file_path: Path) -> pd.DataFrame:
             section_data[axis] = {}
             continue
 
-
         values = {}
 
         for line in lines[
             header_index + 1:
         ]:
 
-            # Stop when next channel section starts
+            # Stop when the next channel section starts
             if line.lower().startswith("ch,"):
                 break
 
             if not line:
                 continue
 
-            if line.startswith("FWHM"):
+            if line.upper().startswith("FWHM"):
                 continue
 
             parts = line.split(",")
@@ -189,10 +210,13 @@ def parse_psf_csv(file_path: Path) -> pd.DataFrame:
                     parts[0]
                 )
 
+                # Avoid duplicate entries
                 if channel in values:
                     continue
 
-                raw_value = parts[1]
+                raw_value = (
+                    parts[1].strip()
+                )
 
                 if raw_value == "-----":
 
@@ -218,7 +242,6 @@ def parse_psf_csv(file_path: Path) -> pd.DataFrame:
 
         section_data[axis] = values
 
-
     # ----------------------------------------------
     # Determine all channels
     # ----------------------------------------------
@@ -226,17 +249,22 @@ def parse_psf_csv(file_path: Path) -> pd.DataFrame:
     all_channels = sorted(
         set(
             list(
-                section_data["X"].keys()
+                section_data[
+                    "X"
+                ].keys()
             )
             + list(
-                section_data["Y"].keys()
+                section_data[
+                    "Y"
+                ].keys()
             )
             + list(
-                section_data["Z"].keys()
+                section_data[
+                    "Z"
+                ].keys()
             )
         )
     )
-
 
     # ----------------------------------------------
     # Build records
@@ -246,17 +274,23 @@ def parse_psf_csv(file_path: Path) -> pd.DataFrame:
 
     for channel in all_channels:
 
-        x = section_data["X"].get(
+        x = section_data[
+            "X"
+        ].get(
             channel,
             np.nan,
         )
 
-        y = section_data["Y"].get(
+        y = section_data[
+            "Y"
+        ].get(
             channel,
             np.nan,
         )
 
-        z = section_data["Z"].get(
+        z = section_data[
+            "Z"
+        ].get(
             channel,
             np.nan,
         )
@@ -274,13 +308,12 @@ def parse_psf_csv(file_path: Path) -> pd.DataFrame:
                 [x, y]
             )
 
-
         records.append(
             {
                 "Date": date_obj,
 
                 # Same channel numbering behavior
-                # as your original notebook.
+                # as the original notebook
                 "Channel": (
                     f"CH{channel + 1}"
                 ),
@@ -296,7 +329,6 @@ def parse_psf_csv(file_path: Path) -> pd.DataFrame:
             }
         )
 
-
     return pd.DataFrame(
         records
     )
@@ -310,7 +342,10 @@ def plot_psf_xy(
     dataframe: pd.DataFrame,
     objective: str,
     output_folder: Path,
-) -> Path | None:
+) -> Optional[Path]:
+    """
+    Plot lateral PSF measurements over time.
+    """
 
     if dataframe.empty:
         return None
@@ -322,11 +357,15 @@ def plot_psf_xy(
     plotted = False
 
     for channel in (
-        dataframe["Channel"].unique()
+        dataframe[
+            "Channel"
+        ].unique()
     ):
 
         channel_data = dataframe[
-            dataframe["Channel"]
+            dataframe[
+                "Channel"
+            ]
             == channel
         ].copy()
 
@@ -340,23 +379,33 @@ def plot_psf_xy(
             continue
 
         axis.plot(
-            channel_data["Date_str"],
-            channel_data["AvgXY"],
+            channel_data[
+                "Date_str"
+            ],
+            channel_data[
+                "AvgXY"
+            ],
             marker="o",
             label=channel,
         )
 
         plotted = True
 
-
     if not plotted:
 
-        plt.close(figure)
+        plt.close(
+            figure
+        )
+
         return None
 
-
     axis.set_title(
-        f"PSF XY - Objective {objective}"
+        f"PSF XY - Objective "
+        f"{objective.upper()}"
+    )
+
+    axis.set_xlabel(
+        "Date"
     )
 
     axis.set_ylabel(
@@ -380,10 +429,12 @@ def plot_psf_xy(
 
     figure.tight_layout()
 
-
     output_path = (
         output_folder
-        / f"PSF_XY_{objective}.png"
+        / (
+            f"PSF_XY_"
+            f"{objective}.png"
+        )
     )
 
     figure.savefig(
@@ -392,7 +443,9 @@ def plot_psf_xy(
         bbox_inches="tight",
     )
 
-    plt.close(figure)
+    plt.close(
+        figure
+    )
 
     return output_path
 
@@ -405,7 +458,10 @@ def plot_psf_z(
     dataframe: pd.DataFrame,
     objective: str,
     output_folder: Path,
-) -> Path | None:
+) -> Optional[Path]:
+    """
+    Plot axial PSF measurements over time.
+    """
 
     if dataframe.empty:
         return None
@@ -416,13 +472,16 @@ def plot_psf_z(
 
     plotted = False
 
-
     for channel in (
-        dataframe["Channel"].unique()
+        dataframe[
+            "Channel"
+        ].unique()
     ):
 
         channel_data = dataframe[
-            dataframe["Channel"]
+            dataframe[
+                "Channel"
+            ]
             == channel
         ].copy()
 
@@ -435,25 +494,34 @@ def plot_psf_z(
         if channel_data.empty:
             continue
 
-
         axis.plot(
-            channel_data["Date_str"],
-            channel_data["MaxZ"],
+            channel_data[
+                "Date_str"
+            ],
+            channel_data[
+                "MaxZ"
+            ],
             marker="o",
             label=channel,
         )
 
         plotted = True
 
-
     if not plotted:
 
-        plt.close(figure)
+        plt.close(
+            figure
+        )
+
         return None
 
-
     axis.set_title(
-        f"PSF Z - Objective {objective}"
+        f"PSF Z - Objective "
+        f"{objective.upper()}"
+    )
+
+    axis.set_xlabel(
+        "Date"
     )
 
     axis.set_ylabel(
@@ -477,10 +545,12 @@ def plot_psf_z(
 
     figure.tight_layout()
 
-
     output_path = (
         output_folder
-        / f"PSF_Z_{objective}.png"
+        / (
+            f"PSF_Z_"
+            f"{objective}.png"
+        )
     )
 
     figure.savefig(
@@ -489,7 +559,9 @@ def plot_psf_z(
         bbox_inches="tight",
     )
 
-    plt.close(figure)
+    plt.close(
+        figure
+    )
 
     return output_path
 
@@ -502,21 +574,37 @@ def run_psf_analysis(
     microscope_dir: Path,
     output_dir: Path,
 ):
+    """
+    Process all PSF CSV files for one microscope.
+    """
 
-    microscope = microscope_dir.name
+    microscope = (
+        microscope_dir.name
+    )
 
     print("")
     print(
-        f"Processing PSF: {microscope}"
+        "----------------------------------------"
     )
 
+    print(
+        f"Processing PSF: "
+        f"{microscope}"
+    )
+
+    print(
+        "----------------------------------------"
+    )
+
+    # ----------------------------------------------
+    # Find CSV files
+    # ----------------------------------------------
 
     csv_files = sorted(
         microscope_dir.glob(
             "*.csv"
         )
     )
-
 
     if not csv_files:
 
@@ -525,23 +613,50 @@ def run_psf_analysis(
             f"for {microscope}."
         )
 
-        return
+        return None
 
-
-    objectives = detect_objectives(
-        csv_files
+    print(
+        f"Found "
+        f"{len(csv_files)} "
+        f"CSV file(s)."
     )
 
+    # ----------------------------------------------
+    # Detect objectives
+    # ----------------------------------------------
+
+    objectives = (
+        detect_objectives(
+            csv_files
+        )
+    )
 
     print(
         "Objectives:",
-        ", ".join(objectives)
+        ", ".join(
+            objective.upper()
+            for objective
+            in objectives
+        )
         or "None",
     )
 
+    if not objectives:
+
+        print(
+            "No objectives could be "
+            "identified from filenames."
+        )
+
+        return None
+
+    # ----------------------------------------------
+    # Create plot folder
+    # ----------------------------------------------
 
     plot_folder = (
-        output_dir / "plots"
+        output_dir
+        / "plots"
     )
 
     plot_folder.mkdir(
@@ -549,18 +664,19 @@ def run_psf_analysis(
         exist_ok=True,
     )
 
+    # ----------------------------------------------
+    # Remove old plots
+    # ----------------------------------------------
 
-    # Remove old plots so stale plots
-    # cannot remain on the website.
     for old_plot in (
-        plot_folder.glob("*.png")
+        plot_folder.glob(
+            "*.png"
+        )
     ):
 
         old_plot.unlink()
 
-
     all_records = []
-
 
     # ----------------------------------------------
     # Process files by objective
@@ -576,8 +692,15 @@ def run_psf_analysis(
             in file_path.name.lower()
         ]
 
+        print(
+            f"Processing objective "
+            f"{objective.upper()}: "
+            f"{len(objective_files)} file(s)"
+        )
 
-        for file_path in objective_files:
+        for file_path in (
+            objective_files
+        ):
 
             try:
 
@@ -588,6 +711,12 @@ def run_psf_analysis(
                 )
 
                 if dataframe.empty:
+
+                    print(
+                        "No usable data in: "
+                        f"{file_path.name}"
+                    )
+
                     continue
 
                 dataframe[
@@ -598,7 +727,6 @@ def run_psf_analysis(
                     dataframe
                 )
 
-
             except Exception as exc:
 
                 print(
@@ -607,9 +735,8 @@ def run_psf_analysis(
                 )
 
                 print(
-                    f"  {exc}"
+                    f"  Error: {exc}"
                 )
-
 
     # ----------------------------------------------
     # Combine data
@@ -621,14 +748,23 @@ def run_psf_analysis(
             "No readable PSF data found."
         )
 
-        return
-
+        return None
 
     combined_df = pd.concat(
         all_records,
         ignore_index=True,
     )
 
+    # Explicitly convert Date column
+    # to Pandas datetime
+    combined_df[
+        "Date"
+    ] = pd.to_datetime(
+        combined_df[
+            "Date"
+        ],
+        errors="coerce",
+    )
 
     combined_df = (
         combined_df
@@ -639,9 +775,10 @@ def run_psf_analysis(
                 "Channel",
             ]
         )
-        .reset_index(drop=True)
+        .reset_index(
+            drop=True
+        )
     )
-
 
     # ----------------------------------------------
     # Save combined data
@@ -652,24 +789,23 @@ def run_psf_analysis(
         exist_ok=True,
     )
 
-
     combined_csv_path = (
         output_dir
         / "combined_PSF_data.csv"
     )
-
 
     combined_df.to_csv(
         combined_csv_path,
         index=False,
     )
 
-
     print(
-        "Saved combined PSF data:",
-        combined_csv_path,
+        "Saved combined PSF data:"
     )
 
+    print(
+        f"  {combined_csv_path}"
+    )
 
     # ----------------------------------------------
     # Create plots
@@ -677,70 +813,118 @@ def run_psf_analysis(
 
     generated_plots = []
 
-
     for objective in objectives:
 
         df_obj = combined_df[
-            combined_df["Objective"]
+            combined_df[
+                "Objective"
+            ]
             == objective
         ].copy()
-
 
         if df_obj.empty:
             continue
 
+        # Remove rows with invalid dates
+        df_obj = df_obj[
+            df_obj[
+                "Date"
+            ].notna()
+        ].copy()
 
-        df_obj = df_obj.sort_values(
-            "Date"
+        if df_obj.empty:
+
+            print(
+                "No valid dated measurements "
+                f"for objective "
+                f"{objective.upper()}."
+            )
+
+            continue
+
+        df_obj = (
+            df_obj.sort_values(
+                "Date"
+            )
         )
 
-
-        df_obj["Date_str"] = (
-            df_obj["Date"]
-            .dt.strftime("%Y-%m")
+        df_obj[
+            "Date_str"
+        ] = (
+            df_obj[
+                "Date"
+            ]
+            .dt.strftime(
+                "%Y-%m"
+            )
         )
 
+        # ------------------------------------------
+        # XY plot
+        # ------------------------------------------
 
-        xy_plot = plot_psf_xy(
-            df_obj,
-            objective,
-            plot_folder,
+        xy_plot = (
+            plot_psf_xy(
+                df_obj,
+                objective,
+                plot_folder,
+            )
         )
 
-
-        if xy_plot is not None:
+        if (
+            xy_plot
+            is not None
+        ):
 
             generated_plots.append(
                 xy_plot
             )
 
             print(
-                f"Saved: {xy_plot.name}"
+                f"Saved: "
+                f"{xy_plot.name}"
             )
 
+        # ------------------------------------------
+        # Z plot
+        # ------------------------------------------
 
-        z_plot = plot_psf_z(
-            df_obj,
-            objective,
-            plot_folder,
+        z_plot = (
+            plot_psf_z(
+                df_obj,
+                objective,
+                plot_folder,
+            )
         )
 
-
-        if z_plot is not None:
+        if (
+            z_plot
+            is not None
+        ):
 
             generated_plots.append(
                 z_plot
             )
 
             print(
-                f"Saved: {z_plot.name}"
+                f"Saved: "
+                f"{z_plot.name}"
             )
 
+    # ----------------------------------------------
+    # Return results
+    # ----------------------------------------------
 
     return {
-        "microscope": microscope,
-        "data": combined_df,
-        "plots": generated_plots,
+        "microscope": (
+            microscope
+        ),
+        "data": (
+            combined_df
+        ),
+        "plots": (
+            generated_plots
+        ),
         "combined_csv": (
             combined_csv_path
         ),
@@ -757,33 +941,94 @@ psf_microscopes = (
     )
 )
 
-
+print("")
 print(
-    "Detected PSF microscopes:",
-    ", ".join(
-        path.name
-        for path
-        in psf_microscopes
-    )
-    or "None",
+    "========================================"
 )
 
+print(
+    "PSF Quality Assessment"
+)
 
-for microscope_dir in psf_microscopes:
+print(
+    "========================================"
+)
+
+print(
+    "Detected PSF microscopes:"
+)
+
+if psf_microscopes:
+
+    for microscope_dir in (
+        psf_microscopes
+    ):
+
+        print(
+            f"  - "
+            f"{microscope_dir.name}"
+        )
+
+else:
+
+    print(
+        "  None"
+    )
+
+
+# --------------------------------------------------
+# Process microscopes
+# --------------------------------------------------
+
+psf_results = {}
+
+for microscope_dir in (
+    psf_microscopes
+):
 
     microscope_output = (
         PSF_OUTPUT_DIR
         / microscope_dir.name
     )
 
-
-    run_psf_analysis(
-        microscope_dir,
-        microscope_output,
+    result = (
+        run_psf_analysis(
+            microscope_dir,
+            microscope_output,
+        )
     )
 
+    if result is not None:
+
+        psf_results[
+            microscope_dir.name
+        ] = result
+
+
+# --------------------------------------------------
+# Finished
+# --------------------------------------------------
 
 print("")
 print(
+    "========================================"
+)
+
+print(
     "PSF plotting complete."
+)
+
+print(
+    "========================================"
+)
+
+print(
+    f"Processed "
+    f"{len(psf_results)} "
+    f"microscope(s)."
+)
+
+print(
+    f"PSF output directory: "
+    f"{PSF_OUTPUT_DIR}"
 )
