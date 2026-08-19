@@ -3,7 +3,7 @@ title: "Registering Brightfield Time-Lapse Images Using SIFT"
 subtitle: "Fiji/ImageJ Step-by-Step Guide"
 toc: true
 toc-depth: 3
-number-sections: true
+number-sections: false
 other-links:
   - text: "← Back to Fiji / ImageJ Analysis"
     href: index.html
@@ -41,7 +41,7 @@ The **Align stack** window will appear.
 
 For most datasets, begin with the default parameters.
 
-### Scale Invariant Interest Point Detector
+#### Scale Invariant Interest Point Detector
 
 | Parameter | Default |
 |---|---:|
@@ -50,7 +50,7 @@ For most datasets, begin with the default parameters.
 | Minimum image size | 64 px |
 | Maximum image size | 1024 px |
 
-### Feature Descriptor
+#### Feature Descriptor
 
 | Parameter | Default |
 |---|---:|
@@ -58,7 +58,7 @@ For most datasets, begin with the default parameters.
 | Feature descriptor orientation bins | 8 |
 | Closest/next closest ratio | 0.92 |
 
-### Geometric Consensus Filter
+#### Geometric Consensus Filter
 
 | Parameter | Default |
 |---|---:|
@@ -68,11 +68,11 @@ For most datasets, begin with the default parameters.
 
 For the **Output** settings, keep **Interpolate** selected.
 
-![](../../images/sift/sift-settings.png){fig-alt="Default SIFT alignment settings in Fiji" width=55%}
-
 ## Step 4: Run the Registration
 
 Click **OK**.
+
+![](../../images/sift/sift-settings.png){fig-alt="Default SIFT alignment settings in Fiji" width=55%}
 
 Fiji will analyze consecutive frames, identify corresponding image features,
 and calculate the transformations required to align the stack.
