@@ -166,6 +166,8 @@ navbar_lines = [
         "            href: "
         "microscopes/psf/index.qmd"
     ),
+    '      - text: "Image Analysis"',
+    "        href: image_analysis/index.qmd",
 ]
 
 NAVBAR_FILE.write_text(

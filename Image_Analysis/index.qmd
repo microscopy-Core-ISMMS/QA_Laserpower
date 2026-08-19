@@ -1,0 +1,12 @@
+---
+title: "Image Analysis"
+toc: true
+---
+
+## Image Analysis Resources
+
+This section provides image analysis workflows, protocols, and resources developed by the Microscopy and Advanced BioImaging CoRE.
+
+## Analysis Workflows
+
+Image analysis workflows and documentation will be added here.
