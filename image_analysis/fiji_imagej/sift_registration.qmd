@@ -19,7 +19,7 @@ stationary structures remain aligned throughout the time series.
 
 ## Step 1: Open the Time-Lapse Image
 
-1. Launch **Fiji/ImageJ**.
+1. Launch *Fiji/ImageJ*.
 2. Open the brightfield time-lapse dataset.
 3. Confirm that the dataset is displayed as an image stack.
 
@@ -33,7 +33,7 @@ From the Fiji menu, select:
 
 **Plugins → Registration → Linear Stack Alignment with SIFT**
 
-![](../../images/sift/sift-menu.png){fig-alt="Location of the Linear Stack Alignment with SIFT plugin in Fiji" width=70%}
+![](../../images/sift/sift-menu.png){fig-alt="Location of the Linear Stack Alignment with SIFT plugin in Fiji" width=90%}
 
 ## Step 3: Configure the SIFT Parameters
 
@@ -42,29 +42,6 @@ The **Align stack** window will appear.
 For most datasets, begin with the default parameters.
 
 #### Scale Invariant Interest Point Detector
-
-| Parameter | Default |
-|---|---:|
-| Initial Gaussian blur | 1.60 px |
-| Steps per scale octave | 3 |
-| Minimum image size | 64 px |
-| Maximum image size | 1024 px |
-
-#### Feature Descriptor
-
-| Parameter | Default |
-|---|---:|
-| Feature descriptor size | 4 |
-| Feature descriptor orientation bins | 8 |
-| Closest/next closest ratio | 0.92 |
-
-#### Geometric Consensus Filter
-
-| Parameter | Default |
-|---|---:|
-| Maximal alignment error | 25.00 px |
-| Inlier ratio | 0.05 |
-| Expected transformation | Rigid |
 
 For the **Output** settings, keep **Interpolate** selected.
 
@@ -106,5 +83,4 @@ Use a filename that distinguishes the registered image from the original.
 
 For example:
 
-```text
-Experiment01_Brightfield_Registered.tif
+ - Experiment01_Brightfield_Registered.tif
