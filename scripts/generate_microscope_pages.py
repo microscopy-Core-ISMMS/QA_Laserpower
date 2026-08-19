@@ -164,7 +164,7 @@ navbar_lines = [
     "        menu:",
         '          - text: "Introduction"',
         "            href: image_analysis/index.qmd",
-        '          - text: "FIJI/ImageJ"',
+        '          - text: "FIJI/ImageJ Workflows"',
         "            href: image_analysis/fiji_imagej/index.qmd",
 ]
 
