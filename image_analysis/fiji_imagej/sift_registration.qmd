@@ -30,7 +30,7 @@ From the Fiji menu, select:
 
 **Plugins → Registration → Linear Stack Alignment with SIFT**
 
-![](../images/sift/sift-menu.png){fig-alt="Location of the Linear Stack Alignment with SIFT plugin in Fiji" width=70%}
+![](../../images/sift/sift-menu.png){fig-alt="Location of the Linear Stack Alignment with SIFT plugin in Fiji" width=70%}
 
 ## Step 3: Configure the SIFT Parameters
 
@@ -65,7 +65,7 @@ For most datasets, begin with the default parameters.
 
 For the **Output** settings, keep **Interpolate** selected.
 
-![](../images/sift/sift-settings.png){fig-alt="Default SIFT alignment settings in Fiji" width=55%}
+![](../../images/sift/sift-settings.png){fig-alt="Default SIFT alignment settings in Fiji" width=55%}
 
 ## Step 4: Run the Registration
 
