@@ -155,17 +155,21 @@ navbar_lines = [
     '      - text: "Quality Assessment - Confocal Microscopes"',
     "        menu:",
     '          - text: "Introduction"',
-    "            href: microscopes/index.qmd",
+    "            href: microscopes/index.html",
+
     '          - text: "Laser Power Measurements"',
-    "            href: microscopes/laser_power/index.qmd",
+    "            href: microscopes/laser_power/index.html",
+
     '          - text: "PSF Measurements"',
-    "            href: microscopes/psf/index.qmd",
+    "            href: microscopes/psf/index.html",
+
     '      - text: "Image Analysis"',
     "        menu:",
         '          - text: "Introduction"',
-        "            href: image_analysis/index.qmd",
+        "            href: image_analysis/index.html",
+
         '          - text: "FIJI/ImageJ Workflows"',
-        "            href: image_analysis/fiji_imagej/index.qmd",
+        "            href: image_analysis/fiji_imagej/index.html",
 ]
 
 NAVBAR_FILE.write_text(
