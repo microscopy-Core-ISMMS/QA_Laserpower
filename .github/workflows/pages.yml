@@ -83,12 +83,21 @@ jobs:
       # microscopes/index.qmd
       # microscopes/laser_power/*.qmd
       # microscopes/psf/*.qmd
-      - name: Render microscope pages
+
+      - name: Render website pages
         run: |
           find microscopes image_analysis -type f -name "*.qmd" | sort | while read -r page; do
             echo "Rendering $page"
             quarto render "$page"
           done
+
+      - name: Check microscope introduction page
+        run: |
+          echo "Checking microscope introduction:"
+          ls -l _site/microscopes/
+          echo ""
+          echo "Checking for index.html:"
+          ls -l _site/microscopes/index.html
 
       - name: Check rendered website
         run: |
