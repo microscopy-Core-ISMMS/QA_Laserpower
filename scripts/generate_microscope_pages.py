@@ -144,9 +144,7 @@ print(
 # Generate automatic navbar
 # --------------------------------------------------
 
-NAVBAR_FILE = (
-    PROJECT_DIR / "_navbar.yml"
-)
+NAVBAR_FILE = PROJECT_DIR / "_navbar.yml"
 
 navbar_lines = [
     "website:",
@@ -154,24 +152,14 @@ navbar_lines = [
     "    left:",
     "      - href: index.ipynb",
     '        text: "Home"',
-    '      - text: "Quality Assesment - Confocal Microscopes"',
+    '      - text: "Confocal Microscopes"',
     "        menu:",
     '          - text: "Laser Power Measurements"',
-    (
-        "            href: "
-        "microscopes/laser_power/index.qmd"
-    ),
+    "            href: microscopes/laser_power/index.qmd",
     '          - text: "PSF Measurements"',
-    (
-        "            href: "
-        "microscopes/psf/index.qmd"
-    ),
+    "            href: microscopes/psf/index.qmd",
     '      - text: "Image Analysis"',
     "        href: image_analysis/index.qmd",
-    '           - text: "Fiji/ImageJ"',
-    (
-    "            href: image_analysis/fiji_imagej/index.qmd",
-    )
 ]
 
 NAVBAR_FILE.write_text(
