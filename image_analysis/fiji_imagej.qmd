@@ -1,0 +1,19 @@
+---
+title: "Fiji / ImageJ"
+toc: true
+other-links:
+  - text: "← Back to Image Analysis"
+    href: index.html
+---
+
+## Fiji / ImageJ
+
+Fiji is an image-processing package based on ImageJ that provides a wide range of tools and plugins for biological image analysis.
+
+## Analysis Workflows
+
+Image analysis workflows using Fiji / ImageJ will be provided here.
+
+## Resources
+
+Additional Fiji / ImageJ documentation, macros, scripts, and analysis protocols will be added here.
