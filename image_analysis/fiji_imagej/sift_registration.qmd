@@ -41,8 +41,6 @@ The **Align stack** window will appear.
 
 For most datasets, begin with the **default parameters**.
 
-#### Scale Invariant Interest Point Detector
-
 For the **Output** settings, keep **Interpolate** selected.
 
 ## Step 4: Run the Registration
