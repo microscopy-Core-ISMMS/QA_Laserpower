@@ -152,14 +152,20 @@ navbar_lines = [
     "    left:",
     "      - href: index.ipynb",
     '        text: "Home"',
-    '      - text: "Confocal Microscopes"',
+    '      - text: "Quality Assessment - Confocal Microscopes"',
     "        menu:",
+    '          - text: "Introduction"',
+    "            href: microscopes/index.qmd",
     '          - text: "Laser Power Measurements"',
     "            href: microscopes/laser_power/index.qmd",
     '          - text: "PSF Measurements"',
     "            href: microscopes/psf/index.qmd",
     '      - text: "Image Analysis"',
-    "        href: image_analysis/index.qmd",
+    "        menu:",
+        '          - text: "Introduction"',
+        "            href: image_analysis/index.qmd",
+        '          - text: "FIJI/ImageJ"',
+        "            href: image_analysis/fiji_imagej/index.qmd",
 ]
 
 NAVBAR_FILE.write_text(
