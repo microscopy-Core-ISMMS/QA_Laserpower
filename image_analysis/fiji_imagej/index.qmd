@@ -12,8 +12,6 @@ Fiji is an image-processing package based on ImageJ that provides a wide range o
 
 ## Analysis Workflows
 
-Image analysis workflows using Fiji / ImageJ will be provided here.
+### Image Registration
 
-## Resources
-
-Additional Fiji / ImageJ documentation, macros, scripts, and analysis protocols will be added here.
+- [Registering Brightfield Time-Lapse Images Using SIFT](sift_registration.qmd)

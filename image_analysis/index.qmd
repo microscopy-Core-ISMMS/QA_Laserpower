@@ -11,4 +11,4 @@ This section provides image analysis workflows, protocols, and resources develop
 
 Select an image analysis platform to view available workflows and resources.
 
-- [Fiji / ImageJ](fiji_imagej.qmd)
+- [Fiji / ImageJ](fiji_imagej/index.qmd)

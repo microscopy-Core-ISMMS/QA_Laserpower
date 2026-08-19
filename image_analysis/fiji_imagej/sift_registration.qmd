@@ -4,6 +4,9 @@ subtitle: "Fiji/ImageJ Step-by-Step Guide"
 toc: true
 toc-depth: 3
 number-sections: true
+other-links:
+  - text: "← Back to Fiji / ImageJ Analysis"
+    href: index.html
 ---
 
 ## Overview

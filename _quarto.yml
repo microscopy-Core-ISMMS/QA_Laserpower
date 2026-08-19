@@ -8,6 +8,7 @@ project:
     - microscopes/laser_power/*.qmd
     - microscopes/psf/*.qmd
     - image_analysis/*.qmd
+    - image_analysis/fiji_imagej/*.qmd
 
   resources:
     - "outputs/**"
