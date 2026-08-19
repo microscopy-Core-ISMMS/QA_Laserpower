@@ -85,7 +85,7 @@ jobs:
       # microscopes/psf/*.qmd
       - name: Render microscope pages
         run: |
-          find microscopes -type f -name "*.qmd" | sort | while read -r page; do
+          find microscopes image_analysis -type f -name "*.qmd" | sort | while read -r page; do
             echo "Rendering $page"
             quarto render "$page"
           done
