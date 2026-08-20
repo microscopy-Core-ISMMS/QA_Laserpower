@@ -643,7 +643,6 @@ def plot_psf_z(
 def run_psf_analysis(
     microscope_dir: Path,
     output_dir: Path,
-    microscope,
 ):
     """
     Process all PSF CSV files for one microscope.
