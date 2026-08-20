@@ -338,10 +338,60 @@ def parse_psf_csv(
 # Create XY plot
 # --------------------------------------------------
 
+def get_channel_colors(microscope: str) -> dict:
+    """
+    Return channel colors based on microscope manufacturer.
+
+    Leica:
+        CH1 = blue
+        CH2 = green
+        CH3 = orange
+        CH4 = red
+
+    Zeiss:
+        CH1 = red
+        CH2 = orange
+        CH3 = green
+        CH4 = blue
+    """
+
+    microscope_lower = microscope.lower()
+
+    if "leica" in microscope_lower:
+
+        return {
+            "CH1": "blue",
+            "CH2": "green",
+            "CH3": "orange",
+            "CH4": "red",
+        }
+
+    if (
+        "zeiss" in microscope_lower
+        or "lsm" in microscope_lower
+    ):
+
+        return {
+            "CH1": "red",
+            "CH2": "orange",
+            "CH3": "green",
+            "CH4": "blue",
+        }
+
+    # Default mapping
+    return {
+        "CH1": "blue",
+        "CH2": "green",
+        "CH3": "orange",
+        "CH4": "red",
+    }
+
+
 def plot_psf_xy(
     dataframe: pd.DataFrame,
     objective: str,
     output_folder: Path,
+    microscope: str,
 ) -> Optional[Path]:
     """
     Plot lateral PSF measurements over time.
@@ -352,6 +402,10 @@ def plot_psf_xy(
 
     figure, axis = plt.subplots(
         figsize=(8, 5)
+    )
+
+    channel_colors = get_channel_colors(
+    microscope
     )
 
     plotted = False
@@ -379,14 +433,14 @@ def plot_psf_xy(
             continue
 
         axis.plot(
-            channel_data[
-                "Date_str"
-            ],
-            channel_data[
-                "AvgXY"
-            ],
+            channel_data["Date_str"],
+            channel_data["AvgXY"],
             marker="o",
             label=channel,
+            color=channel_colors.get(
+                channel,
+                None,
+            ),
         )
 
         plotted = True
@@ -458,6 +512,7 @@ def plot_psf_z(
     dataframe: pd.DataFrame,
     objective: str,
     output_folder: Path,
+    microscope: str,
 ) -> Optional[Path]:
     """
     Plot axial PSF measurements over time.
@@ -468,6 +523,10 @@ def plot_psf_z(
 
     figure, axis = plt.subplots(
         figsize=(8, 5)
+    )
+
+    channel_colors = get_channel_colors(
+    microscope
     )
 
     plotted = False
@@ -503,6 +562,17 @@ def plot_psf_z(
             ],
             marker="o",
             label=channel,
+        )
+
+        axis.plot(
+            channel_data["Date_str"],
+            channel_data["MaxZ"],
+            marker="o",
+            label=channel,
+            color=channel_colors.get(
+                channel,
+                None,
+            ),
         )
 
         plotted = True
@@ -573,6 +643,7 @@ def plot_psf_z(
 def run_psf_analysis(
     microscope_dir: Path,
     output_dir: Path,
+    microscope,
 ):
     """
     Process all PSF CSV files for one microscope.
@@ -894,6 +965,7 @@ def run_psf_analysis(
                 df_obj,
                 objective,
                 plot_folder,
+                microscope,
             )
         )
 
