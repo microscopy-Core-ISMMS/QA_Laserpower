@@ -55,7 +55,7 @@ def display_name(name: str) -> str:
     """
     Convert folder names into human-readable microscope names.
 
-    Example:
+    Examples:
         LSM_980 -> LSM 980
         Andor_Dragonfly_620 -> Andor Dragonfly 620
     """
@@ -83,6 +83,34 @@ def wavelength_from_name(path: Path) -> int:
     return 99999
 
 
+def objective_sort_key(name: str):
+    """
+    Sort objective names numerically.
+
+    Examples:
+        10x
+        20xw
+        40xo
+        63xo
+    """
+
+    match = re.search(
+        r"(\d+)",
+        name,
+    )
+
+    if match:
+        return (
+            int(match.group(1)),
+            name.lower(),
+        )
+
+    return (
+        99999,
+        name.lower(),
+    )
+
+
 def detect_microscopes(data_folder: Path):
     """
     Return microscope directories inside a measurement folder.
@@ -91,10 +119,12 @@ def detect_microscopes(data_folder: Path):
     """
 
     if not data_folder.exists():
+
         print(
             f"Warning: data directory does not exist: "
             f"{data_folder}"
         )
+
         return []
 
     return sorted(
@@ -175,6 +205,7 @@ NAVBAR_FILE.write_text(
     "\n".join(navbar_lines) + "\n",
     encoding="utf-8",
 )
+
 
 print(
     "Generated navbar:"
@@ -258,8 +289,9 @@ for microscope_dir in laser_microscopes:
     microscope = microscope_dir.name
     title = display_name(microscope)
 
+    # Link to rendered HTML page
     laser_index_lines.append(
-        f"- [{title}]({microscope}.qmd)"
+        f"- [{title}]({microscope}.html)"
     )
 
 
@@ -267,6 +299,7 @@ for microscope_dir in laser_microscopes:
     "\n".join(laser_index_lines) + "\n",
     encoding="utf-8",
 )
+
 
 print(
     "Generated Laser Power landing page."
@@ -282,16 +315,9 @@ for microscope_dir in laser_microscopes:
     microscope = microscope_dir.name
     title = display_name(microscope)
 
-    # NOTE:
-    # This keeps your existing output structure:
-    #
-    # outputs/
-    #     LSM_880/
-    #         plots/
-    #         combined_power_data.xlsx
-    #
-    # If you later reorganize outputs too,
-    # this section can be changed separately.
+    # ----------------------------------------------
+    # Output locations
+    # ----------------------------------------------
 
     microscope_output = (
         OUTPUT_DIR / microscope
@@ -308,7 +334,7 @@ for microscope_dir in laser_microscopes:
 
 
     # ----------------------------------------------
-    # Find laser-power measurement plots
+    # Find laser-power trend plots
     # ----------------------------------------------
 
     calibration_plots = []
@@ -346,6 +372,31 @@ for microscope_dir in laser_microscopes:
 
 
     # ----------------------------------------------
+    # Organize plots by wavelength
+    # ----------------------------------------------
+
+    calibration_by_wavelength = {
+        wavelength_from_name(plot): plot
+        for plot in calibration_plots
+    }
+
+    maximum_by_wavelength = {
+        wavelength_from_name(plot): plot
+        for plot in maximum_plots
+    }
+
+
+    wavelengths = sorted(
+        set(
+            calibration_by_wavelength.keys()
+        )
+        | set(
+            maximum_by_wavelength.keys()
+        )
+    )
+
+
+    # ----------------------------------------------
     # Start microscope page
     # ----------------------------------------------
 
@@ -365,7 +416,7 @@ for microscope_dir in laser_microscopes:
 
 
     # ----------------------------------------------
-    # Laser Power Measurements
+    # Laser Power Dashboard
     # ----------------------------------------------
 
     lines.extend([
@@ -374,87 +425,162 @@ for microscope_dir in laser_microscopes:
     ])
 
 
-    if calibration_plots:
+    if wavelengths:
 
-        for plot in calibration_plots:
-
-            wavelength = (
-                wavelength_from_name(plot)
-            )
-
-            plot_title = (
-                f"Laser Power - "
-                f"{wavelength} nm"
-            )
-
-            # Page now lives at:
-            #
-            # microscopes/laser_power/LSM_880.qmd
-            #
-            # therefore ../../ returns to project root.
-
-            image_path = (
-                f"../../outputs/{microscope}/"
-                f"plots/{plot.name}"
-            )
+        for wavelength in wavelengths:
 
             lines.extend([
-                f"### {plot_title}",
+                f"### {wavelength} nm",
                 "",
-                (
-                    f"![{plot_title}]"
-                    f"({image_path})"
-                ),
+                "::: {.grid}",
                 "",
             ])
+
+
+            # ======================================
+            # LEFT COLUMN
+            # Laser Power Trend
+            # ======================================
+
+            lines.extend([
+                (
+                    "::: "
+                    "{.g-col-12 .g-col-md-6 "
+                    ".border .rounded .p-3}"
+                ),
+                "",
+                "#### Laser Power Trend",
+                "",
+            ])
+
+
+            calibration_plot = (
+                calibration_by_wavelength.get(
+                    wavelength
+                )
+            )
+
+
+            if calibration_plot is not None:
+
+                plot_title = (
+                    f"Laser Power - "
+                    f"{wavelength} nm"
+                )
+
+                image_path = (
+                    f"../../outputs/"
+                    f"{microscope}/"
+                    f"plots/"
+                    f"{calibration_plot.name}"
+                )
+
+                lines.extend([
+                    (
+                        f"![{plot_title}]"
+                        f"({image_path})"
+                    ),
+                    "",
+                ])
+
+            else:
+
+                lines.extend([
+                    (
+                        "No laser-power trend "
+                        "plot is available."
+                    ),
+                    "",
+                ])
+
+
+            # Close left column
+            lines.extend([
+                ":::",
+                "",
+            ])
+
+
+            # ======================================
+            # RIGHT COLUMN
+            # Maximum Laser Power
+            # ======================================
+
+            lines.extend([
+                (
+                    "::: "
+                    "{.g-col-12 .g-col-md-6 "
+                    ".border .rounded .p-3}"
+                ),
+                "",
+                "#### Maximum Laser Power",
+                "",
+            ])
+
+
+            maximum_plot = (
+                maximum_by_wavelength.get(
+                    wavelength
+                )
+            )
+
+
+            if maximum_plot is not None:
+
+                plot_title = (
+                    "Maximum Laser Power - "
+                    f"{wavelength} nm"
+                )
+
+                image_path = (
+                    f"../../outputs/"
+                    f"{microscope}/"
+                    f"plots/"
+                    f"{maximum_plot.name}"
+                )
+
+                lines.extend([
+                    (
+                        f"![{plot_title}]"
+                        f"({image_path})"
+                    ),
+                    "",
+                ])
+
+            else:
+
+                lines.extend([
+                    (
+                        "No maximum-power "
+                        "plot is available."
+                    ),
+                    "",
+                ])
+
+
+            # Close right column
+            lines.extend([
+                ":::",
+                "",
+            ])
+
+
+            # Close grid
+            lines.extend([
+                ":::",
+                "",
+            ])
+
 
     else:
 
         lines.extend([
             (
-                "No laser-power measurement "
-                "plots are available."
+                "No laser-power plots "
+                "are currently available."
             ),
             "",
         ])
-
-
-    # ----------------------------------------------
-    # Maximum Laser Power
-    # ----------------------------------------------
-
-    if maximum_plots:
-
-        lines.extend([
-            "## Maximum Laser Power",
-            "",
-        ])
-
-        for plot in maximum_plots:
-
-            wavelength = (
-                wavelength_from_name(plot)
-            )
-
-            plot_title = (
-                "Maximum Laser Power - "
-                f"{wavelength} nm"
-            )
-
-            image_path = (
-                f"../../outputs/{microscope}/"
-                f"plots/{plot.name}"
-            )
-
-            lines.extend([
-                f"### {plot_title}",
-                "",
-                (
-                    f"![{plot_title}]"
-                    f"({image_path})"
-                ),
-                "",
-            ])
 
 
     # ----------------------------------------------
@@ -473,7 +599,8 @@ for microscope_dir in laser_microscopes:
     if excel_path.exists():
 
         excel_link = (
-            f"../../outputs/{microscope}/"
+            f"../../outputs/"
+            f"{microscope}/"
             "combined_power_data.xlsx"
         )
 
@@ -506,6 +633,7 @@ for microscope_dir in laser_microscopes:
         "\n".join(lines) + "\n",
         encoding="utf-8",
     )
+
 
     print(
         "Generated Laser Power page: "
@@ -569,8 +697,9 @@ for microscope_dir in psf_microscopes:
     microscope = microscope_dir.name
     title = display_name(microscope)
 
+    # Link to rendered HTML page
     psf_index_lines.append(
-        f"- [{title}]({microscope}.qmd)"
+        f"- [{title}]({microscope}.html)"
     )
 
 
@@ -578,6 +707,7 @@ for microscope_dir in psf_microscopes:
     "\n".join(psf_index_lines) + "\n",
     encoding="utf-8",
 )
+
 
 print(
     "Generated PSF landing page."
@@ -592,6 +722,7 @@ for microscope_dir in psf_microscopes:
 
     microscope = microscope_dir.name
     title = display_name(microscope)
+
 
     # ----------------------------------------------
     # PSF output directories
@@ -613,6 +744,7 @@ for microscope_dir in psf_microscopes:
         / "combined_PSF_data.csv"
     )
 
+
     # ----------------------------------------------
     # Find XY PSF plots
     # ----------------------------------------------
@@ -628,6 +760,7 @@ for microscope_dir in psf_microscopes:
             key=lambda path: path.name.lower(),
         )
 
+
     # ----------------------------------------------
     # Find Z PSF plots
     # ----------------------------------------------
@@ -642,6 +775,64 @@ for microscope_dir in psf_microscopes:
             ),
             key=lambda path: path.name.lower(),
         )
+
+
+    # ----------------------------------------------
+    # Organize XY plots by objective
+    # ----------------------------------------------
+
+    xy_by_objective = {}
+
+    for plot in xy_plots:
+
+        objective = (
+            plot.stem
+            .replace(
+                "PSF_XY_",
+                ""
+            )
+        )
+
+        xy_by_objective[
+            objective
+        ] = plot
+
+
+    # ----------------------------------------------
+    # Organize Z plots by objective
+    # ----------------------------------------------
+
+    z_by_objective = {}
+
+    for plot in z_plots:
+
+        objective = (
+            plot.stem
+            .replace(
+                "PSF_Z_",
+                ""
+            )
+        )
+
+        z_by_objective[
+            objective
+        ] = plot
+
+
+    # ----------------------------------------------
+    # Determine all objectives
+    # ----------------------------------------------
+
+    objectives = sorted(
+        set(
+            xy_by_objective.keys()
+        )
+        | set(
+            z_by_objective.keys()
+        ),
+        key=objective_sort_key,
+    )
+
 
     # ----------------------------------------------
     # Start PSF microscope page
@@ -661,109 +852,186 @@ for microscope_dir in psf_microscopes:
         "",
     ]
 
+
     # ----------------------------------------------
-    # XY PSF Measurements
+    # PSF Dashboard
     # ----------------------------------------------
 
     psf_lines.extend([
-        "## Lateral PSF Measurements",
+        "## PSF Measurements",
         "",
     ])
 
-    if xy_plots:
 
-        for plot in xy_plots:
+    if objectives:
 
-            objective = (
-                plot.stem
-                .replace(
-                    "PSF_XY_",
-                    ""
+        for objective in objectives:
+
+            display_objective = (
+                objective.upper()
+            )
+
+
+            psf_lines.extend([
+                (
+                    f"### "
+                    f"{display_objective} Objective"
+                ),
+                "",
+                "::: {.grid}",
+                "",
+            ])
+
+
+            # ======================================
+            # LEFT COLUMN
+            # Lateral PSF XY
+            # ======================================
+
+            psf_lines.extend([
+                (
+                    "::: "
+                    "{.g-col-12 .g-col-md-6 "
+                    ".border .rounded .p-3}"
+                ),
+                "",
+                "#### Lateral PSF (XY)",
+                "",
+            ])
+
+
+            xy_plot = (
+                xy_by_objective.get(
+                    objective
                 )
             )
 
-            plot_title = (
-                f"PSF XY - {objective}"
-            )
 
-            image_path = (
-                f"../../outputs/"
-                f"PSF_Measurements/"
-                f"{microscope}/"
-                f"plots/{plot.name}"
-            )
+            if xy_plot is not None:
 
+                image_path = (
+                    f"../../outputs/"
+                    f"PSF_Measurements/"
+                    f"{microscope}/"
+                    f"plots/"
+                    f"{xy_plot.name}"
+                )
+
+                plot_title = (
+                    "Lateral PSF XY - "
+                    f"{display_objective}"
+                )
+
+
+                psf_lines.extend([
+                    (
+                        f"![{plot_title}]"
+                        f"({image_path})"
+                    ),
+                    "",
+                ])
+
+            else:
+
+                psf_lines.extend([
+                    (
+                        "No lateral PSF "
+                        "plot is available."
+                    ),
+                    "",
+                ])
+
+
+            # Close left column
             psf_lines.extend([
-                f"### {objective}",
-                "",
-                (
-                    f"![{plot_title}]"
-                    f"({image_path})"
-                ),
+                ":::",
                 "",
             ])
+
+
+            # ======================================
+            # RIGHT COLUMN
+            # Axial PSF Z
+            # ======================================
+
+            psf_lines.extend([
+                (
+                    "::: "
+                    "{.g-col-12 .g-col-md-6 "
+                    ".border .rounded .p-3}"
+                ),
+                "",
+                "#### Axial PSF (Z)",
+                "",
+            ])
+
+
+            z_plot = (
+                z_by_objective.get(
+                    objective
+                )
+            )
+
+
+            if z_plot is not None:
+
+                image_path = (
+                    f"../../outputs/"
+                    f"PSF_Measurements/"
+                    f"{microscope}/"
+                    f"plots/"
+                    f"{z_plot.name}"
+                )
+
+                plot_title = (
+                    "Axial PSF Z - "
+                    f"{display_objective}"
+                )
+
+
+                psf_lines.extend([
+                    (
+                        f"![{plot_title}]"
+                        f"({image_path})"
+                    ),
+                    "",
+                ])
+
+            else:
+
+                psf_lines.extend([
+                    (
+                        "No axial PSF "
+                        "plot is available."
+                    ),
+                    "",
+                ])
+
+
+            # Close right column
+            psf_lines.extend([
+                ":::",
+                "",
+            ])
+
+
+            # Close grid
+            psf_lines.extend([
+                ":::",
+                "",
+            ])
+
 
     else:
 
         psf_lines.extend([
             (
-                "No lateral PSF measurements "
-                "are currently available."
+                "No PSF plots are "
+                "currently available."
             ),
             "",
         ])
 
-    # ----------------------------------------------
-    # Axial PSF Measurements
-    # ----------------------------------------------
-
-    psf_lines.extend([
-        "## Axial PSF Measurements",
-        "",
-    ])
-
-    if z_plots:
-
-        for plot in z_plots:
-
-            objective = (
-                plot.stem
-                .replace(
-                    "PSF_Z_",
-                    ""
-                )
-            )
-
-            plot_title = (
-                f"PSF Z - {objective}"
-            )
-
-            image_path = (
-                f"../../outputs/"
-                f"PSF_Measurements/"
-                f"{microscope}/"
-                f"plots/{plot.name}"
-            )
-
-            psf_lines.extend([
-                f"### {objective}",
-                "",
-                (
-                    f"![{plot_title}]"
-                    f"({image_path})"
-                ),
-                "",
-            ])
-
-    else:
-
-        psf_lines.extend([
-            (
-                "No axial PSF measurements "
-                "are currently available."
-            ),
-            "",
-        ])
 
     # ----------------------------------------------
     # PSF data download
@@ -776,6 +1044,7 @@ for microscope_dir in psf_microscopes:
         ),
         "",
     ])
+
 
     if combined_psf_csv.exists():
 
@@ -799,7 +1068,9 @@ for microscope_dir in psf_microscopes:
             "is not available."
         )
 
+
     psf_lines.append("")
+
 
     # ----------------------------------------------
     # Write PSF microscope page
@@ -814,6 +1085,7 @@ for microscope_dir in psf_microscopes:
         "\n".join(psf_lines) + "\n",
         encoding="utf-8",
     )
+
 
     print(
         "Generated PSF page: "
