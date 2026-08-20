@@ -526,7 +526,7 @@ def plot_psf_z(
     )
 
     channel_colors = get_channel_colors(
-    microscope
+        microscope
     )
 
     plotted = False
@@ -553,6 +553,7 @@ def plot_psf_z(
         if channel_data.empty:
             continue
 
+        # Plot each channel ONCE
         axis.plot(
             channel_data[
                 "Date_str"
@@ -560,13 +561,6 @@ def plot_psf_z(
             channel_data[
                 "MaxZ"
             ],
-            marker="o",
-            label=channel,
-        )
-
-        axis.plot(
-            channel_data["Date_str"],
-            channel_data["MaxZ"],
             marker="o",
             label=channel,
             color=channel_colors.get(
@@ -634,7 +628,6 @@ def plot_psf_z(
     )
 
     return output_path
-
 
 # --------------------------------------------------
 # Run PSF analysis for one microscope
