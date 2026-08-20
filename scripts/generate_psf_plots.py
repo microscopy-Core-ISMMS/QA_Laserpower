@@ -938,6 +938,7 @@ def run_psf_analysis(
                 df_obj,
                 objective,
                 plot_folder,
+                microscope,
             )
         )
 
