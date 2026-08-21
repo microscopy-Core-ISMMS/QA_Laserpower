@@ -1225,14 +1225,14 @@ for microscope_dir in (
                     ]
                 )
 
-else:
+            else:
 
-    psf_lines.extend(
-        [
-            "No lateral PSF plot is available.",
-            "",
-        ]
-    )
+                psf_lines.extend(
+                    [
+                        "No lateral PSF plot is available.",
+                        "",
+                    ]
+                )
 
 
             # Close lateral column
