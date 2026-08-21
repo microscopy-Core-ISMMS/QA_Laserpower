@@ -1204,37 +1204,11 @@ for microscope_dir in (
                     f"{microscope}/"
                     "plots/"
                     f"{xy_plot.name}"
-                )
+                )   
 
-
-                # Full-screen button
                 psf_lines.extend(
                     [
-                        (
-                            f'<a '
-                            f'href="{xy_plot_path}" '
-                            f'target="_blank" '
-                            f'rel="noopener noreferrer" '
-                            f'class="btn '
-                            f'btn-outline-primary '
-                            f'btn-sm" '
-                            f'style="'
-                            f'margin-bottom:10px;">'
-                            f'⛶ Open Full Screen'
-                            f'</a>'
-                        ),
-                        "",
-                    ]
-                )
-
-
-                # Interactive Plotly iframe
-                psf_lines.extend(
-                    [
-                        (
-                            '<div '
-                            'class="plotly-dashboard">'
-                        ),
+                        '<div class="plotly-dashboard">',
                         (
                             f'<iframe '
                             f'src="{xy_plot_path}" '
@@ -1243,8 +1217,7 @@ for microscope_dir in (
                             f'style="'
                             f'border:none; '
                             f'width:100%;" '
-                            f'loading="lazy" '
-                            f'allowfullscreen>'
+                            f'loading="lazy">'
                             f'</iframe>'
                         ),
                         "</div>",
@@ -1252,17 +1225,14 @@ for microscope_dir in (
                     ]
                 )
 
-            else:
+else:
 
-                psf_lines.extend(
-                    [
-                        (
-                            "No lateral PSF "
-                            "plot is available."
-                        ),
-                        "",
-                    ]
-                )
+    psf_lines.extend(
+        [
+            "No lateral PSF plot is available.",
+            "",
+        ]
+    )
 
 
             # Close lateral column
@@ -1306,35 +1276,9 @@ for microscope_dir in (
                     f"{z_plot.name}"
                 )
 
-
-                # Full-screen button
                 psf_lines.extend(
                     [
-                        (
-                            f'<a '
-                            f'href="{z_plot_path}" '
-                            f'target="_blank" '
-                            f'rel="noopener noreferrer" '
-                            f'class="btn '
-                            f'btn-outline-primary '
-                            f'btn-sm" '
-                            f'style="'
-                            f'margin-bottom:10px;">'
-                            f'⛶ Open Full Screen'
-                            f'</a>'
-                        ),
-                        "",
-                    ]
-                )
-
-
-                # Interactive Plotly iframe
-                psf_lines.extend(
-                    [
-                        (
-                            '<div '
-                            'class="plotly-dashboard">'
-                        ),
+                        '<div class="plotly-dashboard">',
                         (
                             f'<iframe '
                             f'src="{z_plot_path}" '
@@ -1343,8 +1287,7 @@ for microscope_dir in (
                             f'style="'
                             f'border:none; '
                             f'width:100%;" '
-                            f'loading="lazy" '
-                            f'allowfullscreen>'
+                            f'loading="lazy">'
                             f'</iframe>'
                         ),
                         "</div>",
@@ -1356,10 +1299,7 @@ for microscope_dir in (
 
                 psf_lines.extend(
                     [
-                        (
-                            "No axial PSF "
-                            "plot is available."
-                        ),
+                        "No axial PSF plot is available.",
                         "",
                     ]
                 )
