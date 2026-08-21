@@ -1089,7 +1089,7 @@ for microscope_dir in (
     # Start PSF microscope page
     # ----------------------------------------------
 
-  psf_lines = [
+    psf_lines = [
         "---",
         f'title: "{title}"',
         "toc: true",
