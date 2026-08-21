@@ -9,6 +9,8 @@ other-links:
     href: index.html
 ---
 
+**First published:** August 19, 2026
+
 ## Overview
 
 This guide describes how to register a brightfield time-lapse image stack
