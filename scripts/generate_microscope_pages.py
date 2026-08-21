@@ -1089,10 +1089,17 @@ for microscope_dir in (
     # Start PSF microscope page
     # ----------------------------------------------
 
-    psf_lines = [
+  psf_lines = [
         "---",
         f'title: "{title}"',
         "toc: true",
+        "format:",
+        "  html:",
+        "    page-layout: full",
+        "    grid:",
+        "      body-width: 1250px",
+        "      margin-width: 220px",
+        "      gutter-width: 1.5rem",
         "other-links:",
         (
             '  - text: '
@@ -1232,7 +1239,7 @@ for microscope_dir in (
                             f'<iframe '
                             f'src="{xy_plot_path}" '
                             f'width="100%" '
-                            f'height="520" '
+                            f'height="600" '
                             f'style="'
                             f'border:none; '
                             f'width:100%;" '
@@ -1332,7 +1339,7 @@ for microscope_dir in (
                             f'<iframe '
                             f'src="{z_plot_path}" '
                             f'width="100%" '
-                            f'height="520" '
+                            f'height="600" '
                             f'style="'
                             f'border:none; '
                             f'width:100%;" '
