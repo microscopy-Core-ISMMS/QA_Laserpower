@@ -909,7 +909,7 @@ for microscope_dir in psf_microscopes:
             )
 
 
-           if xy_plot is not None:
+            if xy_plot is not None:
 
                 plot_path = (
                     f"../../outputs/"
