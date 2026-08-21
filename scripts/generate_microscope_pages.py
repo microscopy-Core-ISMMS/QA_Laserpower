@@ -404,7 +404,6 @@ for microscope_dir in laser_microscopes:
         "---",
         f'title: "{title}"',
         "toc: true",
-        "lightbox: true",
         "other-links:",
         (
             '  - text: '
@@ -843,7 +842,6 @@ for microscope_dir in psf_microscopes:
         "---",
         f'title: "{title}"',
         "toc: true",
-        "lightbox: true",
         "other-links:",
         (
             '  - text: '
