@@ -756,7 +756,7 @@ for microscope_dir in psf_microscopes:
 
         xy_plots = sorted(
             psf_plot_dir.glob(
-                "PSF_XY_*.png"
+                "PSF_XY_*.html"
             ),
             key=lambda path: path.name.lower(),
         )
@@ -772,7 +772,7 @@ for microscope_dir in psf_microscopes:
 
         z_plots = sorted(
             psf_plot_dir.glob(
-                "PSF_Z_*.png"
+                "PSF_Z_*.html"
             ),
             key=lambda path: path.name.lower(),
         )
@@ -909,9 +909,9 @@ for microscope_dir in psf_microscopes:
             )
 
 
-            if xy_plot is not None:
+           if xy_plot is not None:
 
-                image_path = (
+                plot_path = (
                     f"../../outputs/"
                     f"PSF_Measurements/"
                     f"{microscope}/"
@@ -919,9 +919,21 @@ for microscope_dir in psf_microscopes:
                     f"{xy_plot.name}"
                 )
 
-                plot_title = (
-                    "Lateral PSF XY - "
-                    f"{display_objective}"
+                psf_lines.extend(
+                    [
+                        '<div class="plotly-dashboard">',
+                        (
+                            f'<iframe '
+                            f'src="{plot_path}" '
+                            f'width="100%" '
+                            f'height="520" '
+                            f'style="border:none;" '
+                            f'loading="lazy">'
+                            f'</iframe>'
+                        ),
+                        "</div>",
+                        "",
+                    ]
                 )
 
 
@@ -977,7 +989,7 @@ for microscope_dir in psf_microscopes:
 
             if z_plot is not None:
 
-                image_path = (
+                plot_path = (
                     f"../../outputs/"
                     f"PSF_Measurements/"
                     f"{microscope}/"
@@ -985,12 +997,58 @@ for microscope_dir in psf_microscopes:
                     f"{z_plot.name}"
                 )
 
-                plot_title = (
-                    "Axial PSF Z - "
-                    f"{display_objective}"
+                psf_lines.extend(
+                    [
+                        '<div class="plotly-dashboard">',
+                        (
+                            f'<iframe '
+                            f'src="{plot_path}" '
+                            f'width="100%" '
+                            f'height="520" '
+                            f'style="border:none;" '
+                            f'loading="lazy">'
+                            f'</iframe>'
+                        ),
+                        "</div>",
+                        "",
+                    ]
                 )
 
+                psf_lines.extend(
+                    [
+                        f"### {objective.upper()}",
+                        "",
+                        "::: {.grid}",
+                        "",
+                        "::: {.g-col-12 .g-col-md-6 .border .rounded .p-3}",
+                        "",
+                        "#### Lateral PSF (XY)",
+                        "",
+                    ]
+                )
 
+                psf_lines.extend(
+                    [
+                        "",
+                        ":::",
+                        "",
+                        "::: {.g-col-12 .g-col-md-6 .border .rounded .p-3}",
+                        "",
+                        "#### Axial PSF (Z)",
+                        "",
+                    ]
+                )
+
+                psf_lines.extend(
+                    [
+                        "",
+                        ":::",
+                        "",
+                        ":::",
+                        "",
+                    ]
+                )
+                
                 psf_lines.extend([
                     (
                         f"![{plot_title}]"

@@ -6,6 +6,7 @@ import re
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 
 
 # --------------------------------------------------
@@ -394,111 +395,114 @@ def plot_psf_xy(
     microscope: str,
 ) -> Optional[Path]:
     """
-    Plot lateral PSF measurements over time.
+    Create an interactive Plotly lateral PSF plot.
     """
 
     if dataframe.empty:
         return None
 
-    figure, axis = plt.subplots(
-        figsize=(8, 5)
+    channel_colors = get_channel_colors(
+        microscope
     )
 
-    channel_colors = get_channel_colors(
-    microscope
-    )
+    figure = go.Figure()
 
     plotted = False
 
-    for channel in (
-        dataframe[
-            "Channel"
-        ].unique()
+    for channel in sorted(
+        dataframe["Channel"].unique()
     ):
 
         channel_data = dataframe[
-            dataframe[
-                "Channel"
-            ]
-            == channel
+            dataframe["Channel"] == channel
         ].copy()
 
         channel_data = channel_data[
-            ~channel_data[
-                "AvgXY"
-            ].isna()
+            channel_data["AvgXY"].notna()
         ]
 
         if channel_data.empty:
             continue
 
-        axis.plot(
-            channel_data["Date_str"],
-            channel_data["AvgXY"],
-            marker="o",
-            label=channel,
-            color=channel_colors.get(
-                channel,
-                None,
-            ),
+        channel_data = channel_data.sort_values(
+            "Date"
+        )
+
+        figure.add_trace(
+            go.Scatter(
+                x=channel_data["Date"],
+                y=channel_data["AvgXY"],
+                mode="lines+markers",
+                name=channel,
+                line=dict(
+                    color=channel_colors.get(
+                        channel
+                    ),
+                    width=2,
+                ),
+                marker=dict(
+                    size=8,
+                ),
+                hovertemplate=(
+                    "<b>%{fullData.name}</b><br>"
+                    "Date: %{x|%b %Y}<br>"
+                    "XY: %{y:.3f} µm"
+                    "<extra></extra>"
+                ),
+            )
         )
 
         plotted = True
 
     if not plotted:
-
-        plt.close(
-            figure
-        )
-
         return None
 
-    axis.set_title(
-        f"PSF XY - Objective "
-        f"{objective.upper()}"
+    figure.update_layout(
+        title=(
+            f"PSF XY - Objective "
+            f"{objective.upper()}"
+        ),
+        xaxis_title="Date",
+        yaxis_title="XY (µm)",
+        legend_title="Channel",
+        template="plotly_white",
+        hovermode="x unified",
+        height=500,
+        margin=dict(
+            l=70,
+            r=30,
+            t=70,
+            b=70,
+        ),
     )
 
-    axis.set_xlabel(
-        "Date"
+    figure.update_xaxes(
+        showgrid=True,
+        tickformat="%b %Y",
     )
 
-    axis.set_ylabel(
-        "XY (µm)"
+    figure.update_yaxes(
+        showgrid=True,
     )
 
-    axis.legend(
-        title="Channel"
+    output_folder.mkdir(
+        parents=True,
+        exist_ok=True,
     )
-
-    axis.tick_params(
-        axis="x",
-        rotation=45,
-    )
-
-    axis.grid(
-        True,
-        linestyle="--",
-        alpha=0.5,
-    )
-
-    figure.tight_layout()
 
     output_path = (
         output_folder
-        / (
-            f"PSF_XY_"
-            f"{objective}.png"
-        )
+        / f"PSF_XY_{objective}.html"
     )
 
-    figure.savefig(
+    figure.write_html(
         output_path,
-        dpi=300,
-        bbox_inches="tight",
-    )
-
-    plt.close(
-        figure
+        include_plotlyjs="cdn",
+        full_html=True,
+        config={
+            "responsive": True,
+            "displaylogo": False,
+        },
     )
 
     return output_path
@@ -515,116 +519,114 @@ def plot_psf_z(
     microscope: str,
 ) -> Optional[Path]:
     """
-    Plot axial PSF measurements over time.
+    Create an interactive Plotly axial PSF plot.
     """
 
     if dataframe.empty:
         return None
 
-    figure, axis = plt.subplots(
-        figsize=(8, 5)
-    )
-
     channel_colors = get_channel_colors(
         microscope
     )
 
+    figure = go.Figure()
+
     plotted = False
 
-    for channel in (
-        dataframe[
-            "Channel"
-        ].unique()
+    for channel in sorted(
+        dataframe["Channel"].unique()
     ):
 
         channel_data = dataframe[
-            dataframe[
-                "Channel"
-            ]
-            == channel
+            dataframe["Channel"] == channel
         ].copy()
 
         channel_data = channel_data[
-            ~channel_data[
-                "MaxZ"
-            ].isna()
+            channel_data["MaxZ"].notna()
         ]
 
         if channel_data.empty:
             continue
 
-        # Plot each channel ONCE
-        axis.plot(
-            channel_data[
-                "Date_str"
-            ],
-            channel_data[
-                "MaxZ"
-            ],
-            marker="o",
-            label=channel,
-            color=channel_colors.get(
-                channel,
-                None,
-            ),
+        channel_data = channel_data.sort_values(
+            "Date"
+        )
+
+        figure.add_trace(
+            go.Scatter(
+                x=channel_data["Date"],
+                y=channel_data["MaxZ"],
+                mode="lines+markers",
+                name=channel,
+                line=dict(
+                    color=channel_colors.get(
+                        channel
+                    ),
+                    width=2,
+                ),
+                marker=dict(
+                    size=8,
+                ),
+                hovertemplate=(
+                    "<b>%{fullData.name}</b><br>"
+                    "Date: %{x|%b %Y}<br>"
+                    "Z: %{y:.3f} µm"
+                    "<extra></extra>"
+                ),
+            )
         )
 
         plotted = True
 
     if not plotted:
-
-        plt.close(
-            figure
-        )
-
         return None
 
-    axis.set_title(
-        f"PSF Z - Objective "
-        f"{objective.upper()}"
+    figure.update_layout(
+        title=(
+            f"PSF Z - Objective "
+            f"{objective.upper()}"
+        ),
+        xaxis_title="Date",
+        yaxis_title="Z (µm)",
+        legend_title="Channel",
+        template="plotly_white",
+        hovermode="x unified",
+        height=500,
+        margin=dict(
+            l=70,
+            r=30,
+            t=70,
+            b=70,
+        ),
     )
 
-    axis.set_xlabel(
-        "Date"
+    figure.update_xaxes(
+        showgrid=True,
+        tickformat="%b %Y",
     )
 
-    axis.set_ylabel(
-        "Z (µm)"
+    figure.update_yaxes(
+        showgrid=True,
     )
 
-    axis.legend(
-        title="Channel"
+    output_folder.mkdir(
+        parents=True,
+        exist_ok=True,
     )
-
-    axis.tick_params(
-        axis="x",
-        rotation=45,
-    )
-
-    axis.grid(
-        True,
-        linestyle="--",
-        alpha=0.5,
-    )
-
-    figure.tight_layout()
 
     output_path = (
         output_folder
-        / (
-            f"PSF_Z_"
-            f"{objective}.png"
-        )
+        / f"PSF_Z_{objective}.html"
     )
 
-    figure.savefig(
+    figure.write_html(
         output_path,
-        dpi=300,
-        bbox_inches="tight",
-    )
-
-    plt.close(
-        figure
+        include_plotlyjs="cdn",
+        full_html=True,
+        config={
+            "responsive": True,
+            "displaylogo": False,
+        },
     )
 
     return output_path
@@ -733,7 +735,7 @@ def run_psf_analysis(
 
     for old_plot in (
         plot_folder.glob(
-            "*.png"
+            "*.html"
         )
     ):
 
